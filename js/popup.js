@@ -191,6 +191,13 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
 /(?:出席議員|欠席議員|欠員|説明のため出席した者|職務のため議場に出席した事務局職員|議事日程|開会宣告)…….*\n/g, ""
 /\<span\ lang\=\"ja\"\>……\<\/span\>/g, "\ ……"
 /((?:.*＋[\s\S][^＋]*＋\n　*（.*）\n)|(?:.*＋[\s\S][^＋]*＋\n))/gm, '<fieldset class="ikkatu"><legend>一括</legend>$1</fieldset><br>
+/^(.*｜)（一括上程）.*$/gm, '$1'
+/^(.*)＋\n　+(.*｜)$/gm, '$1$2'
+/(　+)((?:（|\().*報告(?:）|\)))＋/gm, '_pre$1$2｜'
+/　*｜\n　+([^｜　]*)　*/gm, '$1'
+/^(.+)[｜＋]$/gm, '$1'
+/_pre/g, ''
+/\n|\r/g, "<br>"
 `;
 
   let regexs = $("#replaceRegex").text().split(/\r?\n/g);
