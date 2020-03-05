@@ -1,0 +1,194 @@
+@charset "UTF-8";
+/* ===================================================================
+
+common style
+
+=================================================================== */
+/* ===================================================================
+
+setting 変数定義をここに記載していく
+
+=================================================================== */
+body, button {
+  font-family: "Roboto", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", 'メイリオ', Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===================================================================
+
+define style
+
+=================================================================== */
+/* ===================================================================
+
+mixin style
+
+=================================================================== */
+/* ===================================================================
+
+base style
+
+=================================================================== */
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.4rem;
+  margin: 0;
+  min-width: 340px;
+}
+
+form {
+  padding: 15px;
+}
+form legend {
+  font-size: 1.2em;
+  text-align: center;
+}
+form input:focus {
+  outline: none;
+}
+
+form input[type=text] {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+form .container {
+  display: flex;
+  margin-bottom: 0.5em;
+  justify-content: center;
+}
+form .container .row {
+  display: flex;
+  align-items: center;
+  margin-right: 1em;
+}
+form .container .row:last-child {
+  margin-right: 0;
+}
+form fieldset {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Tooltip container */
+.tooltip {
+  font-size: 1.2rem;
+  color: blue;
+  position: relative;
+  display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 150px;
+  background-color: #fff;
+  color: #000;
+  text-align: left;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid gray;
+  filter: drop-shadow(2px 2px 2px #000);
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+
+textarea {
+  width: 300px;
+  min-width:300px;
+  max-width:700px;
+}
+
+div.flex-split {
+  display: flex;
+  align-items: stretch;
+}
+
+.flex-split label {
+  width: 50%;
+}
+
+.flex-split label.right {
+  text-align: right;
+}
+
+p.icon-wrapper {
+  margin: 0;
+  font-size: 4rem;
+  line-height: 0;
+}
+
+#councils {
+  border:2px solid #ccc;
+  width:100%;
+  height: 100px;
+  margin-bottom: 8px;
+  overflow-y: scroll; 
+  display: none;
+}
+
+#schedules {
+  border:2px solid #ccc;
+  width:100%;
+  height: 100px;
+  margin-bottom: 8px;
+  overflow-y: scroll;
+  display: none;
+}
+
+.group-title {
+  margin: 0px 0 2px 0px;
+  border-bottom: 1px solid #143742;
+  background-color: #307e96;
+  color: white;
+  padding: 2px 0px 1px 5px;
+  font-weight: bold;
+}
+
+.council-title {
+  margin: 0px 0 2px 0px;
+  border-bottom: 1px solid #2c2c2c;
+  background-color: #808080;
+  color: white;
+  padding: 2px 0px 1px 5px;
+  font-weight: bold;
+}
+
+#check {
+  padding: 1em;
+}
+
+button {
+  outline: none;
+  background: #9b0f0f;
+  border: none;
+  border-bottom: 0.4em solid #710000;
+  width: 100%;
+  margin: 5px auto 0 auto;
+  color: white;
+  padding: 1.2rem 1.2rem 0.2rem 1.2rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.toggler {
+  cursor: pointer;
+  color: blue;
+
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

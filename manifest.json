@@ -1,0 +1,40 @@
+{
+  "manifest_version": 2,
+  "name": "Discuss 2 File",
+  "description": "This extension downloads Discuss minutes.",
+  "version": "1.0",
+  "icons": {
+    "16": "images/icon/icon_16.png",
+    "48": "images/icon/icon_48.png",
+    "128": "images/icon/icon_128.png"
+  },
+  "background": {
+    "scripts": [ "js/background.js" ],
+    "persistent": false
+  },
+  "page_action": {
+    "default_icon": {
+      "19": "images/icon/icon_19.png",
+      "38": "images/icon/icon_38.png"
+    },
+    "default_title": "Discuss 2 File",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": [ "https://ssp.kaigiroku.net/*" ],
+      "js": [
+        "js/constants.js",
+        "js/jquery-2.1.1.min.js",
+        "js/browser-polyfill.min.js"
+      ]
+    }
+  ],
+  "permissions": [
+    "tabs",
+    "https://ssp.kaigiroku.net/*",
+    "storage",
+    "webNavigation",
+    "declarativeContent"
+  ]
+}

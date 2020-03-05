@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Discuss2File</title>
+    <link rel="stylesheet" href="css/icon.css"/>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+<form id="form">
+    <fieldset>
+        <div id="councils">
+        </div>
+        <div id="schedules">
+        </div>
+    </fieldset>
+    <div class="toggler" data-role="toggler" data-options="置換設定＞,＜閉じる" data-actions="hide,show">置換設定＞</div>
+    <fieldset style="display:none;">
+        置換用正規表現 <span class="tooltip">(?)<span class="tooltiptext">文書中に含まれる文字列を正規表現で検索し置換することで、多彩な表現が可能になります。詳しくはプラグインの説明をご覧ください。</span></span>
+        <textarea id="replaceRegex" name="replaceRegex"></textarea>
+        CSS <span class="tooltip">(?)<span class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span>
+        <textarea id="customCss"" name="customCss"></textarea>
+    </fieldset>
+    <hr>
+    <fieldset>
+        <label><input type="radio" name="htmlSave" value="print" checked="checked">印刷画面を開く</label> <span class="tooltip">(?)<span class="tooltiptext">下のDownloadボタンをクリックすると印刷用画面（印刷ダイアログ）が表示されます。その画面で、送信先を「PDFで保存」にして「保存」ボタンを押すと、PDFファイルで保存できます。</span></span><br>
+        <label><input type="radio" name="htmlSave" value="save">ファイルに保存</label>
+        （<label><input type="radio" name="fileType" value="html" checked="checked">HTML</label>
+        <label><input type="radio" name="fileType" value="txt">TXT</label>）
+         <span class="tooltip">(?)<span class="tooltiptext">ファイルの拡張子を選択します。ブラウザで多彩に表現できるHTML形式か、通常のテキスト(txt）形式を選択します。</span></span>
+    </fieldset>
+    <hr>
+    <fieldset>
+        <div class="flex-split">
+            <label for="filename">ファイル名：</label>
+            <label class="right"><input type="checkbox" id="removeSpacesFromFilename" name="removeSpacesFromFilename">空白削除</label>
+        </div>
+        <input type="text" id="filename" name="filename" size="30">
+        <button id="download">
+            <p class="icon-wrapper">
+                <span class="icon-download"></span>
+            </p>
+            <span>Download</span>
+        </button>
+        <div id="downloadLink"></div>
+        <div id="fontLoading" style="display:none;">Font-loading</div>
+    </fieldset>
+</form>
+<script src="js/constants.js"></script>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/browser-polyfill.min.js"></script>
+<script src="js/popup.js" type="module"></script>
+<script src="js/jspdf.min.js"></script>
+<script src="js/html2canvas.min.js"></script>
+</body>
+</html>
