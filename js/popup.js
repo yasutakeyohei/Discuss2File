@@ -1,5 +1,6 @@
 let content = {}; // see singleMinuteParase or councilsParser
 let fontModule = null;
+let urlInfo = { cityName: "" }
 
 const awaitParseSingleMinute = (mode) => {
   return new Promise(async (resolve) => {
@@ -94,7 +95,7 @@ const awaitParseSchedulesFromCouncils = (councils) => {
 }
 
 const downloadFromSchedules = async () => {
-  baseURI = "https://ssp.kaigiroku.net/tenant/kodaira/SpMinuteView.html?";
+  baseUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMinuteView.html?";
   idpairs = [];
   $('input[name=schedules]:checked').each((idx, elm) => {
     idpairs.push({councilId: $(elm).attr("data-council-id"), scheduleId: $(elm).attr("data-schedule-id")});
@@ -102,11 +103,11 @@ const downloadFromSchedules = async () => {
 
   let multipleParsedContent = "";
   for (const idpair of idpairs) {
-    let uri = baseURI + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
+    let url = baseUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
     // executescript前にupdate（ページ遷移）がcompleteするのを待つ必要がある
     // でないと、ページ遷移前のページでscriptをexecuteすることになってしまう
     // https://stackoverflow.com/questions/4584517/chrome-tabs-problems-with-chrome-tabs-update-and-chrome-tabs-executescript
-    await awaitBrowserTabUpdate(uri);
+    await awaitBrowserTabUpdate(url);
     await awaitParseSingleMinute(MODE_SINGLE_MINUTE_WAITLOAD_AND_PARSE);
     multipleParsedContent += content.parsedContent;
   }
@@ -115,7 +116,7 @@ const downloadFromSchedules = async () => {
 //  parseContent(id);
 }
 
-const awaitBrowserTabUpdate = (uri) => {
+const awaitBrowserTabUpdate = (url) => {
   return new Promise(resolve => {
     listener = (tabId, changeInfo, tab) => {
       if(changeInfo.status === 'complete') {
@@ -124,7 +125,7 @@ const awaitBrowserTabUpdate = (uri) => {
       }
     }
     browser.tabs.onUpdated.addListener(listener);
-    browser.tabs.update(null, {url: uri, active: true});
+    browser.tabs.update(null, {url: url, active: true});
   });
 }
 
@@ -168,77 +169,73 @@ const downloadSingleMinutePDF = async (parsedContent) => {
 
 }
 
-
 const downloadSingleMinuteHTML = async (parsedContent) => {
+  $("#replaceRegexErr").hide();
   const filename = $("#filename").val() + ".html";
 
-  const hyperLink = '<a href="https://ssp.kaigiroku.net/tenant/kodaira/$1">($2)</a>';
+  //const baseUrl = '<a href="https://ssp.kaigiroku.net/tenant/kodaira/$1">($2)</a>';
+  const baseUrl = 'https://ssp.kaigiroku.net/tenant/' + urlInfo.cityName + '/';
 
   const startTime = performance.now();
 
   const head = '<html><head><title>test</title><style type="text/css">\n' +
-    'a {font-size:8px; text-decoration: none;}\n' +
-    '.a4 {font-family: koruri; width: 100%; font-size:12px; padding:10px;}\n' +
-    '.ikkatu {display: inline-block;}\n' +
-    '.ikkatu th {text-align: left}\n' +
     '</style></head><body><div class="a4">\n';
   const foot = '</div></body></html>';
 
-  const defaultRegexReplace = `
-/…{2,}/g, "……"
-/\n*(\<span\ lang\=\"ja\"\>……\<\/span\>)\n*/g, '……'
-/\r?\n/g, "<br>"
-/(?:出席議員|欠席議員|欠員|説明のため出席した者|職務のため議場に出席した事務局職員|議事日程|開会宣告)…….*\n/g, ""
-/\<span\ lang\=\"ja\"\>……\<\/span\>/g, "\ ……"
-/((?:.*＋[\s\S][^＋]*＋\n　*（.*）\n)|(?:.*＋[\s\S][^＋]*＋\n))/gm, '<fieldset class="ikkatu"><legend>一括</legend>$1</fieldset><br>
-/^(.*｜)（一括上程）.*$/gm, '$1'
-/^(.*)＋\n　+(.*｜)$/gm, '$1$2'
-/(　+)((?:（|\().*報告(?:）|\)))＋/gm, '_pre$1$2｜'
-/　*｜\n　+([^｜　]*)　*/gm, '$1'
-/^(.+)[｜＋]$/gm, '$1'
-/_pre/g, ''
-/\n|\r/g, "<br>"
-`;
+  console.log($("#replaceRegex").text());
 
-  let regexs = $("#replaceRegex").text().split(/\r?\n/g);
-  console.log($("#replaceRegex").text(), regexs);
+  let regexes = $("#replaceRegex").text().split(/\r?\n/g);
  
   let err = {};
-  for (let i = 0; i < regexs.length; i++) {
-    let regex = regexs[i];
+  for (let i = 0; i < regexes.length; i++) {
+    let regex = regexes[i];
+
+    if(regex === "" || (/^[ 　]*\{.*\}/).test(regex)) continue;
+    if((/^[^/]+/).test(regex)){
+      err = { index: i + 1, message: "無効な文字で始まっています。正規表現は/（半角スラッシュ）、コメントは{（半角波括弧）で始める必要があります。" };
+      break;
+    }
+
     //置換文字列の""もしくは''で括られた部分を抽出後、正規表現の抽出
     let replace = ""; //置換文字列
     // https://stackoverflow.com/questions/6525556/regular-expression-to-match-escaped-characters-quotes
-    regex = regex.replace(/(?<!\\)(?:\\{2})*"(?:(?<!\\)(?:\\{2})*\\"|[^"])+(?<!\\)(?:\\{2})*"/, (match) => {
+    regex = regex.replace(/(?<!\\)(?:\\{2})*"(?:(?<!\\)(?:\\{2})*\\"|[^"])*(?<!\\)(?:\\{2})*"/, (match) => {
+      console.log("ma" + match);
       replace = match;
       return "";
     });
+    /*
     if(replace.length === 0) {
-      regex = regex.replace(/(?<!\\)(?:\\{2})*'(?:(?<!\\)(?:\\{2})*\\'|[^'])+(?<!\\)(?:\\{2})*'/, (match) => {
+      regex = regex.replace(/(?<!\\)(?:\\{2})*'(?:(?<!\\)(?:\\{2})*\\'|[^'])*(?<!\\)(?:\\{2})*'/, (match) => {
         replace = match;
         return "";
       });  
     }
+    */
     if(replace.length >= 2) { //""の分が二文字
       // ダブルクオーテーションを削除
       replace = replace.slice(1).slice(0, -1);
       //最後のカンマを削除
       regex = regex.replace(/^(.*),[^,]*$/g, "$1");
       let flag = "";
-      regex = regex.replace(/^\/(.*)\/([gimsui])$/, (match, p1, p2) => {
+      regex = regex.replace(/^\/(.*)\/([gimsui]*)$/, (match, p1, p2) => {
         flag = p2;
         return p1;
-      });  
+      });
       //regex = regex.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
+
+      replace = replace.replace(/\\"/g, '"');
+      replace = replace.replace(/\{baseUrl\}/g, baseUrl);
 
       console.log("regex:"+regex);
       console.log("flag:"+flag);
       console.log("replace:"+replace);
       const r = new RegExp(regex, flag);
       console.log("r" + r);
-      parsedContent = parsedContent.replace(r, replace);      
+      parsedContent = parsedContent.replace(r, replace);
+      console.log(parsedContent);
     } else {
-      err = { index: i + 1, message: "置換文字列が見つかりません" };
+      err = { index: i + 1, message: "置換文字列が見つかりません" + replace.length };
       break;
     }
 
@@ -246,24 +243,20 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
     // https://stackoverflow.com/questions/3115150/how-to-escape-regular-expression-special-characters-using-javascript/9310752#9310752
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
   }
+  //エラーの表示
+  if(Object.keys(err).length > 0) {
+    $("#replaceRegexErr")
+    .text(("[エラー：" + err.index + "行目] " + err.message))
+    .show()
+    .on( 'click', evt =>{
+      $(evt.target).hide();
+    });
+    if($('[data-role=toggler]').next().is(":hidden")) $('[data-role=toggler]').click();
+    return;
+  }
 
-  // parsedContent = parsedContent.replace(/…{2,}/g, "……");
-  // parsedContent = parsedContent.replace(/\n*(\<span\ lang\=\"ja\"\>……\<\/span\>)\n*/g, '……');
-  // parsedContent = parsedContent.replace(/(?:出席議員|欠席議員|欠員|説明のため出席した者|職務のため議場に出席した事務局職員|議事日程|開会宣告)…….*\n/g, "");
+//  parsedContent = parsedContent.replace(/\<strong\>\<a href=\"(.*)\"\ target\=\"_self\"\>(.*)\<\/a\>\<\/strong\>/gm, hyperLink);
 
-  // parsedContent = parsedContent.replace(/\<span\ lang\=\"ja\"\>……\<\/span\>/g, "\ ……");
-  parsedContent = parsedContent.replace(/\<strong\>\<a href=\"(.*)\"\ target\=\"_self\"\>(.*)\<\/a\>\<\/strong\>/gm, hyperLink);
-
-  // //一括上程をパース
-  // parsedContent = parsedContent.replace(/((?:.*＋[\s\S][^＋]*＋\n　*（.*）\n)|(?:.*＋[\s\S][^＋]*＋\n))/gm, '<fieldset class="ikkatu"><legend>一括</legend>$1</fieldset><br>');
-  // parsedContent = parsedContent.replace(/^(.*｜)（一括上程）.*$/gm, '$1');
-  // parsedContent = parsedContent.replace(/^(.*)＋\n　+(.*｜)$/gm, '$1$2');
-  // parsedContent = parsedContent.replace(/(　+)((?:（|\().*報告(?:）|\)))＋/gm, '_pre$1$2｜');  
-  // parsedContent = parsedContent.replace(/　*｜\n　+([^｜　]*)　*/gm, '$1');
-  // parsedContent = parsedContent.replace(/^(.+)[｜＋]$/gm, '$1');
-  // parsedContent = parsedContent.replace(/_pre/g, '');
-
-  // parsedContent = parsedContent.replace(/\n|\r/g, "<br>");
 
   const endTime = performance.now(); // 終了時間
   console.log(endTime - startTime);
@@ -298,7 +291,6 @@ const saveOptions = async () => {
     options.push({type: "textarea", name: elm.name, value: elm.value, checked: null});
   });
 
-  console.log(options);
   await browser.storage.local.set({ 'options': options });
 }
 
@@ -325,9 +317,10 @@ const loadOptions = async () => {
 const main = async () => {
   await loadOptions();
   const tabs = await browser.tabs.query({'active': true, 'lastFocusedWindow': true});
-  const uri = tabs[0].url;
-  let pageMode = uri.match(/schedule_id/) ? "single" : "council";
-  if(uri.match(/schedule-dialog/)) pageMode = "schedule";
+  const url = tabs[0].url;
+  urlInfo.cityName = url.match(/^.*tenant\/([^/]*)\/.*$/)[1];
+  let pageMode = url.match(/schedule_id/) ? "single" : "council";
+  if(url.match(/schedule-dialog/)) pageMode = "schedule";
 
   //toggler
   $('[data-role=toggler]').each((idx, elm) => {
@@ -346,6 +339,18 @@ const main = async () => {
           break;
       }
     })
+  });
+
+  $('[data-role=loadCityRegex').on( 'click', async () => {
+    if(window.confirm("現在設定されている正規表現とCSSが上書きされます。よろしいですか？")) {
+      const cityName = $("#cityRegexSelect").val();
+      const module = await import("./regexes/" + cityName + "-regex.js");
+      console.log(module.regexes);
+      if (module.regexes && module.regexes.length > 0) {
+        $("#replaceRegex").text(module.regexes);
+        saveOptions();
+      }
+    }
   });
 
   $("[name=fileType], [name=txtCrlf], [name=htmlSave], [id=removeSpacesFromFilename]").change(() => {
