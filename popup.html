@@ -18,8 +18,15 @@
     <fieldset style="display:none;">
         置換用正規表現 <span class="tooltip">(?)<span class="tooltiptext">文書中に含まれる文字列を正規表現で検索し置換することで、多彩な表現が可能になります。詳しくはプラグインの説明をご覧ください。</span></span>
         <textarea id="replaceRegex" name="replaceRegex"></textarea>
+        <div id="replaceRegexErr" style="display:none;"></div>
         CSS <span class="tooltip">(?)<span class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span>
-        <textarea id="customCss"" name="customCss"></textarea>
+        <textarea id="customCss" name="customCss"></textarea>
+        <div id="customCssErr" style="display:none;"></div>
+        <div class="select-city">
+            <select id="cityRegexSelect">
+                <option value="tokyo-kodaira-shi">東京都 小平市</option>
+            </select><input data-role="loadCityRegex" type="button" value="の設定をロード" />
+        </div>
     </fieldset>
     <hr>
     <fieldset>
