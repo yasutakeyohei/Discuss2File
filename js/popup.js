@@ -200,14 +200,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
       replace = match;
       return "";
     });
-    /*
-    if(replace.length === 0) {
-      regex = regex.replace(/(?<!\\)(?:\\{2})*'(?:(?<!\\)(?:\\{2})*\\'|[^'])*(?<!\\)(?:\\{2})*'/, (match) => {
-        replace = match;
-        return "";
-      });  
-    }
-    */
+
     if(replace.length >= 2) { //""の分が二文字
       // ダブルクオーテーションを削除
       replace = replace.slice(1).slice(0, -1);
@@ -218,18 +211,12 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
         flag = p2;
         return p1;
       });
-      //regex = regex.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
 
       replace = replace.replace(/\\"/g, '"');
       replace = replace.replace(/\{baseUrl\}/g, baseUrl);
 
-      // console.log("regex:"+regex);
-      // console.log("flag:"+flag);
-      // console.log("replace:"+replace);
       const r = new RegExp(regex, flag);
-      console.log("r" + r);
       parsedContent = parsedContent.replace(r, replace);
-      console.log(parsedContent);
     } else {
       err = { index: i + 1, message: "置換文字列が見つかりません" + replace.length };
       break;
@@ -311,7 +298,6 @@ const loadOptions = async () => {
       });
       if(obj && obj.value) $(elm).text(obj.value);
     });
-
   }
 }
 
