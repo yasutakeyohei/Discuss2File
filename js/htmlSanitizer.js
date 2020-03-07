@@ -25,11 +25,17 @@ const attributeWhitelist = [
 ];
 
 const cssWhitelist = [
-    'background-color',
+    'background-color', 'border',
+    'border-top', 'border-right', 'border-bottom', 'border-left',
+    'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color',
+    'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width',
+    'border-top-style', 'border-right-style', 'border-bottom-style', 'border-left-style',
+    'border-collapse',
     'color',
     'display',
     'font-size', 'font-weight', 'font-family',
     'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
+    'max-width',
     'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
     'text-align',
     'text-decoration', 'text-decoration-line', 'text-decoration-style', 'text-decoration-color',
@@ -85,11 +91,14 @@ export const sanitizeHtml = (input) => {
                             }
                         } else {
                             if (attr.name === "href" && attr.value.indexOf(":") > -1) {
-                                for (const schema of schemaWhiteList) {
-                                    if(attr.value.indexOf(schema) !== 0) break attributeLoop;
+                                const schema = attr.value.match(/^(.*\:)/)[1];
+                                console.log(schema, schemaWhiteList.indexOf(schema));
+                                if(schema.length > 0 && schemaWhiteList.indexOf(schema) > -1) {
+                                    newNode.setAttribute(attr.name, attr.value);
                                 }
+                            } else {
+                                newNode.setAttribute(attr.name, attr.value);
                             }
-                            newNode.setAttribute(attr.name, attr.value);
                         }
                     }
                 }
