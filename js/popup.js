@@ -178,14 +178,10 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
 
   const startTime = performance.now();
 
-  const head = '<html><head><title>test</title><style type="text/css">\n' +
-    '</style></head><body><div class="a4">\n';
-  const foot = '</div></body></html>';
-
-  console.log($("#replaceRegex").text());
-
   let regexes = $("#replaceRegex").text().split(/\r?\n/g);
- 
+  console.log(regexes);
+
+  // regex parse
   let err = {};
   for (let i = 0; i < regexes.length; i++) {
     let regex = regexes[i];
@@ -200,7 +196,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
     let replace = ""; //置換文字列
     // https://stackoverflow.com/questions/6525556/regular-expression-to-match-escaped-characters-quotes
     regex = regex.replace(/(?<!\\)(?:\\{2})*"(?:(?<!\\)(?:\\{2})*\\"|[^"])*(?<!\\)(?:\\{2})*"/, (match) => {
-      console.log("ma" + match);
+      // console.log("ma" + match);
       replace = match;
       return "";
     });
@@ -227,9 +223,9 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
       replace = replace.replace(/\\"/g, '"');
       replace = replace.replace(/\{baseUrl\}/g, baseUrl);
 
-      console.log("regex:"+regex);
-      console.log("flag:"+flag);
-      console.log("replace:"+replace);
+      // console.log("regex:"+regex);
+      // console.log("flag:"+flag);
+      // console.log("replace:"+replace);
       const r = new RegExp(regex, flag);
       console.log("r" + r);
       parsedContent = parsedContent.replace(r, replace);
@@ -257,12 +253,17 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
 
 //  parsedContent = parsedContent.replace(/\<strong\>\<a href=\"(.*)\"\ target\=\"_self\"\>(.*)\<\/a\>\<\/strong\>/gm, hyperLink);
 
-
   const endTime = performance.now(); // 終了時間
   console.log(endTime - startTime);
 
+  const head = '<style type="text/css">\n' + $("#customCss").text() + '</style><div class="a4">\n';
+  const foot = '</div>';
+
   parsedContent = head + parsedContent + foot;
-  //console.log(parsedContent);
+
+  const mo = await import('./htmlSanitizer.js');
+  parsedContent = mo.sanitizeHtml(parsedContent);
+
 
   if($("[type='radio'][name='htmlSave'][value='save']").is(":checked")){
     var elm = document.createElement('a');
@@ -344,10 +345,14 @@ const main = async () => {
   $('[data-role=loadCityRegex').on( 'click', async () => {
     if(window.confirm("現在設定されている正規表現とCSSが上書きされます。よろしいですか？")) {
       const cityName = $("#cityRegexSelect").val();
-      const module = await import("./regexes/" + cityName + "-regex.js");
-      console.log(module.regexes);
+      let module = await import("./regexes/" + cityName + "-regex.js");
       if (module.regexes && module.regexes.length > 0) {
         $("#replaceRegex").text(module.regexes);
+        saveOptions();
+      }
+      module = await import("./regexes/" + cityName + "-css.js");
+      if (module.css && module.css.length > 0) {
+        $("#customCss").text(module.css);
         saveOptions();
       }
     }
