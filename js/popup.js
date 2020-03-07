@@ -95,8 +95,8 @@ const awaitParseSchedulesFromCouncils = (councils) => {
 }
 
 const downloadFromSchedules = async () => {
-  baseUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMinuteView.html?";
-  idpairs = [];
+  const baseUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMinuteView.html?";
+  let idpairs = [];
   $('input[name=schedules]:checked').each((idx, elm) => {
     idpairs.push({councilId: $(elm).attr("data-council-id"), scheduleId: $(elm).attr("data-schedule-id")});
   });
@@ -107,18 +107,19 @@ const downloadFromSchedules = async () => {
     // executescript前にupdate（ページ遷移）がcompleteするのを待つ必要がある
     // でないと、ページ遷移前のページでscriptをexecuteすることになってしまう
     // https://stackoverflow.com/questions/4584517/chrome-tabs-problems-with-chrome-tabs-update-and-chrome-tabs-executescript
+    console.log("await");
     await awaitBrowserTabUpdate(url);
     await awaitParseSingleMinute(MODE_SINGLE_MINUTE_WAITLOAD_AND_PARSE);
     multipleParsedContent += content.parsedContent;
   }
-  downloadSingleMinute(multipleParsedContent);
- 
+  downloadSingleMinuteHTML(multipleParsedContent);
+  console.log("dwonload");
 //  parseContent(id);
 }
 
 const awaitBrowserTabUpdate = (url) => {
   return new Promise(resolve => {
-    listener = (tabId, changeInfo, tab) => {
+    const listener = (tabId, changeInfo, tab) => {
       if(changeInfo.status === 'complete') {
         browser.tabs.onUpdated.removeListener(listener);
         resolve();
@@ -129,7 +130,7 @@ const awaitBrowserTabUpdate = (url) => {
   });
 }
 
-const downloadSingleMinute = (parsedContent) => {
+const downloadSingleMinuteTxt = (parsedContent) => {
   const filename = $("#filename").val() + ".txt";
   var elm = document.createElement('a');
   elm.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(parsedContent));
@@ -216,6 +217,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
       replace = replace.replace(/\{baseUrl\}/g, baseUrl);
 
       const r = new RegExp(regex, flag);
+      console.log(parsedContent);
       parsedContent = parsedContent.replace(r, replace);
     } else {
       err = { index: i + 1, message: "置換文字列が見つかりません" + replace.length };
@@ -367,7 +369,7 @@ const main = async () => {
         if($("[type='radio'][name='fileType'][value='html']").is(":checked")){
           downloadSingleMinuteHTML(content.parsedContent);
         } else {
-          downloadSingleMinute(content.parsedContent);
+          downloadSingleMinuteTxt(content.parsedContent);
         }  
       break;
       default:
