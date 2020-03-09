@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Discuss 2 File",
   "description": "This extension downloads Discuss minutes.",
-  "version": "1.0",
+  "version": "1.0.0",
   "icons": {
     "16": "images/icon/icon_16.png",
     "48": "images/icon/icon_48.png",
