@@ -38,6 +38,7 @@ body {
   font-size: 1.4rem;
   margin: 0;
   min-width: 340px;
+  position: relative;
 }
 
 form {
@@ -75,6 +76,17 @@ form fieldset {
   padding: 0;
 }
 
+#loading {
+  position: absolute;
+  top: 0;
+  left: 5px;
+}
+#loading span {
+  color: red;
+  font-size:12px;
+  font-weight: bold;
+}
+
 /* Tooltip container */
 .tooltip {
   font-size: 1.2rem;
@@ -104,6 +116,11 @@ form fieldset {
   visibility: visible;
 }
 
+.tooltip .left {
+  top: -5px;
+  right: 105%;
+}
+
 textarea {
   width: 100%;
   min-width:300px;
@@ -129,11 +146,14 @@ div.flex-split {
 }
 
 .flex-split label {
-  width: 50%;
+  font-size: 12px;
+  width: 30%;
 }
 
-.flex-split label.right {
+.flex-split div.right {
+  font-size: 12px;
   text-align: right;
+  width: 70%
 }
 
 p.icon-wrapper {
@@ -145,19 +165,23 @@ p.icon-wrapper {
 #councils {
   border:2px solid #ccc;
   width:100%;
+  box-sizing: border-box;
   height: 100px;
   margin-bottom: 8px;
   overflow-y: scroll; 
   display: none;
+  resize: both;
 }
 
 #schedules {
   border:2px solid #ccc;
   width:100%;
+  box-sizing: border-box;
   height: 100px;
   margin-bottom: 8px;
   overflow-y: scroll;
   display: none;
+  resize: both;
 }
 
 .group-title {
