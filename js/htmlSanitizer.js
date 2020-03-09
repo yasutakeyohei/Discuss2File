@@ -34,6 +34,7 @@ const cssWhitelist = [
     'color',
     'display',
     'font-size', 'font-weight', 'font-family',
+    'list-style', 'list-style-position', 'list-style-image', 'list-style-type',
     'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
     'max-width',
     'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
@@ -77,7 +78,7 @@ export const sanitizeHtml = (input) => {
                     }
                     cssString += "}\n";
                 }
-                console.log(cssString);
+                //console.log(cssString);
                 newNode.innerHTML = cssString;
             } else {
                 for (const attr of node.attributes) {
@@ -92,7 +93,6 @@ export const sanitizeHtml = (input) => {
                         } else {
                             if (attr.name === "href" && attr.value.indexOf(":") > -1) {
                                 const schema = attr.value.match(/^(.*\:)/)[1];
-                                console.log(schema, schemaWhiteList.indexOf(schema));
                                 if(schema.length > 0 && schemaWhiteList.indexOf(schema) > -1) {
                                     newNode.setAttribute(attr.name, attr.value);
                                 }
