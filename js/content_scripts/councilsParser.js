@@ -27,35 +27,68 @@ var parseCouncils = () => {
   $('ul.parent_bar>li:not(".add")').filter(function() { return $(this).css("display") !== "none"; }).each((idx, elm) => {
     // https://stackoverflow.com/questions/3442394/using-text-to-retrieve-only-text-not-nested-in-child-tags/#3442757
     let title = $(elm).contents().not($(elm).children()).text().replace(/\s+|\n/g, "");
-    let id = $(elm).children('ul').attr('id');
-    let group = $(elm).parents('div.table_area').prev('h2').text();
+    let id = -1;
+    let group = "";
+    switch(config.pageMode) {
+      case PAGE_MODE_TOP:
+        id = $(elm).attr('data-council_id');
+        group = $(elm).parents('div.table_area').prev('h2').text();
+        break;
+      case PAGE_MODE_YEARLY:
+        id = $(elm).children('ul').attr('id');
+        group = $(elm).parents('div.table_area').prev('h2').text();
+        break;
+      case PAGE_MODE_SCHEDULE_DIALOG:
+        break;
+    }
     content.councils.push({group: group, id: id, title: title});
   });
 };
 
+//schedule id を取得する
 var parseScheduleIds = () => {
   content.result = "scheduleParsed";
   for(const council of config.councils) {
     let councilId = council.id;
     let councilTitle = council.title;
     let schedules = [];
-    $("#" + councilId + " > li").each((idx,elm) => {
-      let id = $(elm).attr('schedule_id');
-      let title = $(elm).text().replace(/\s+/g, "");
-      schedules.push({id: id, title: title});
-    });
+    switch(config.pageMode) {
+      case PAGE_MODE_TOP:
+        $(`[data-council_id=${councilId}] > ul > li`).each((idx,elm) => {
+          let id = $(elm).attr('schedule_id');
+          let title = $(elm).text().replace(/\s+/g, "");
+          schedules.push({id: id, title: title});
+        });
+        break;
+      case PAGE_MODE_YEARLY:
+        $(`#${councilId} > li`).each((idx,elm) => {
+          let id = $(elm).attr('schedule_id');
+          let title = $(elm).text().replace(/\s+/g, "");
+          schedules.push({id: id, title: title});
+        });
+        break;
+    }
     content.councils.push({id: councilId, title: councilTitle, schedules: schedules});
   }
-  console.log(content.councils);
   chrome.runtime.sendMessage({ content: content });
 }
 
 var awaitSchedulesShown = (councilId) => {
   return new Promise(resolve => {
-    var target = document.getElementById(councilId);
+    let target = null;
+    switch(config.pageMode) {
+      case PAGE_MODE_TOP:
+        target = $(`[data-council_id=${councilId}]`)[0];
+        break;
+      case PAGE_MODE_YEARLY:
+        target = document.getElementById(councilId);
+        break;
+      case PAGE_MODE_SCHEDULE_DIALOG:
+        break;
+    }
     var observer = new MutationObserver(mutations => {
       for(const record of mutations) {
-        if(record.target.style.display === "block" && record.target.style.overflow !== "hidden") {
+        if(record.addedNodes.length > 0) {
           observer.disconnect();
           resolve();
           break;
@@ -63,12 +96,18 @@ var awaitSchedulesShown = (councilId) => {
       }
     });
     observer.observe(target, {
-      attributes: true,
-      childList: false,
-      characterData: false,
-      attributeFilter: ['style'],
+      childList: true,
     })
-    $("#" + councilId).parent("li").click();
+    switch(config.pageMode) {
+      case PAGE_MODE_TOP:
+        $(target).click();
+        break;
+      case PAGE_MODE_YEARLY:
+        $("#" + councilId).parent("li").click();
+        break;
+      case PAGE_MODE_SCHEDULE_DIALOG:
+        break;
+    }
   });
 }
 
@@ -78,21 +117,33 @@ var main = async () => {
       await parseCouncils();
       chrome.runtime.sendMessage({ content: content });
       break;
-    case MODE_SCHEDULES_SHOW_AND_PARSE:
-      // クリックしてcouncilリストを開き、schedule_idを得る
+    case MODE_SCHEDULES_SHOW_AND_PARSE_IDS: // クリックしてcouncilリストを開き、schedule_idを得る
+      // 一度も展開表示されていないcouncilを得る
       let councilId = 0;
-      for(const council of config.councils) {
-        let id = council.id
-        if($('#' + id).css("display") !== "block") {
-          councilId = id;
+
+      switch(config.pageMode) {
+        case PAGE_MODE_TOP:
+          for(const council of config.councils) {
+            let topCouncilElm = $(`[data-council_id=${council.id}]`);
+            if(topCouncilElm.length && !topCouncilElm.has("ul").length) {
+              councilId = council.id;
+              break;
+            }
+          }
           break;
-        }
+        case PAGE_MODE_YEARLY:
+          for(const council of config.councils) {
+            if(!$('#' + council.id).has("li").length) {
+              councilId = council.id;
+              break;
+            }
+          }
+          break;
       }
       if(councilId == 0) {
         parseScheduleIds();
         break;
       }
-
       await awaitSchedulesShown(councilId);
       parseScheduleIds();
       break;
