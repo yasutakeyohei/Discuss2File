@@ -7,12 +7,11 @@
     <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
-<form id="form">
+    <div id="loading" style="display:none;"><img src="images/icon/icon_loader.gif"><span></span></div>
+    <form id="form">
     <fieldset>
-        <div id="councils">
-        </div>
-        <div id="schedules">
-        </div>
+        <div id="councils"></div>
+        <div id="schedules"></div>
     </fieldset>
     <div class="toggler" data-role="toggler" data-options="置換設定＞,＜閉じる" data-actions="hide,show">置換設定＞</div>
     <fieldset style="display:none;">
@@ -22,6 +21,7 @@
         CSS <span class="tooltip">(?)<span class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span>
         <textarea id="customCss" name="customCss"></textarea>
         <div id="customCssErr" style="display:none;"></div>
+        <label><input type="checkbox" id="addMenu" name="addMenu" checked="checked">自動作成目次を追加</label><span class="tooltip">(?)<span class="tooltiptext">正規表現でh1-h6タグを追加すると、それらのタグへのリンクを自動的に作成し、ページの先頭に「自動作成目次」として追加します。詳しくはプラグインの説明をご覧ください。</span></span>
         <div class="select-city">
             <select id="cityRegexSelect">
                 <option value="tokyo-kodaira-shi">東京都 小平市</option>
@@ -30,17 +30,20 @@
     </fieldset>
     <hr>
     <fieldset>
-        <label><input type="radio" name="htmlSave" value="print" checked="checked">印刷画面を開く</label> <span class="tooltip">(?)<span class="tooltiptext">下のDownloadボタンをクリックすると印刷用画面（印刷ダイアログ）が表示されます。その画面で、送信先を「PDFで保存」にして「保存」ボタンを押すと、PDFファイルで保存できます。</span></span><br>
+        <label><input type="radio" name="htmlSave" value="print" checked="checked">印刷画面を開く（PDF保存）</label> <span class="tooltip">(?)<span class="tooltiptext left">下のDownloadボタンをクリックすると印刷用画面（印刷ダイアログ）が表示されます。その画面で、送信先を「PDFで保存」にして「保存」ボタンを押すと、PDFファイルで保存できます。</span></span><br>
         <label><input type="radio" name="htmlSave" value="save">ファイルに保存</label>
         （<label><input type="radio" name="fileType" value="html" checked="checked">HTML</label>
-        <label><input type="radio" name="fileType" value="txt">TXT</label>）
-         <span class="tooltip">(?)<span class="tooltiptext">ファイルの拡張子を選択します。ブラウザで多彩に表現できるHTML形式か、通常のテキスト(txt）形式を選択します。</span></span>
+        <label><input type="radio" name="fileType" value="txt" disabled="disabled">TXT</label>）
+         <span class="tooltip">(?)<span class="tooltiptext left">ファイルの拡張子を選択します。ブラウザで多彩に表現できるHTML形式か、通常のテキスト(txt）形式を選択します。テキスト形式は現在使えません。</span></span>
     </fieldset>
     <hr>
     <fieldset>
         <div class="flex-split">
             <label for="filename">ファイル名：</label>
-            <label class="right"><input type="checkbox" id="removeSpacesFromFilename" name="removeSpacesFromFilename">空白削除</label>
+            <div class="right">
+                <label><input type="checkbox" id="removeSpacesFromFilename" name="removeSpacesFromFilename" checked="checked">空白削除</label>
+                <label><input type="checkbox" id="hankakuNumber" name="hankakuNumber" checked="checked">数字を半角に</label>
+            </div>
         </div>
         <input type="text" id="filename" name="filename" size="30">
         <button id="download">
@@ -50,7 +53,6 @@
             <span>Download</span>
         </button>
         <div id="downloadLink"></div>
-        <div id="fontLoading" style="display:none;">Font-loading</div>
     </fieldset>
 </form>
 <script src="js/constants.js"></script>
