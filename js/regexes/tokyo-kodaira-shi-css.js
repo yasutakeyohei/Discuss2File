@@ -13,6 +13,9 @@ table td,
 table th {
   border: 1px solid #333;
 }
+h5 {
+  font-size: 12px;
+}
 .a4 {
   width: 100%;
   font-size: 12px;
