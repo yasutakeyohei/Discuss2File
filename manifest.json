@@ -36,5 +36,8 @@
     "storage",
     "webNavigation",
     "declarativeContent"
+  ],
+  "web_accessible_resources": [
+    "fonts/*.ttf"
   ]
 }
