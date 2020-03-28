@@ -118,8 +118,8 @@ const downloadFromSchedules = async () => {
     idpairs.push({councilId: $(elm).attr("data-council-id"), scheduleId: $(elm).attr("data-schedule-id")});
   });
 
-  if(idpairs.length > 10) {
-    alert("サーバーへの負荷を考慮し、一度に選択できる項目を10個までに制限しております。");
+  if(idpairs.length > 12) {
+    alert("サーバーへの負荷を考慮し、一度に選択できる項目を12個までに制限しております。");
     $("#loading").hide();
     return;
   }
@@ -131,7 +131,8 @@ const downloadFromSchedules = async () => {
     if(loopCount++ != 0) {
       let waitMSec = 1000 + loopCount * 500;
       $("#loading > span").text(waitMSec/1000 + "秒待機（負荷軽減用）");
-      await sleep(waitMSec);
+//      await sleep(waitMSec);
+await sleep(1000);
     }
     let url = baseUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
     // executescript前にupdate（ページ遷移）がcompleteするのを待つ必要がある
@@ -248,8 +249,10 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
       replace = replace.replace(/\{baseUrl\}/g, baseUrl);
 
       const r = new RegExp(regex, flag);
-      //console.log(parsedContent);
+      console.log(parsedContent);
+      console.log(r);
       parsedContent = parsedContent.replace(r, replace);
+      console.log(parsedContent);
     } else {
       err = { index: i + 1, message: "置換文字列が見つかりません" + replace.length };
       break;
@@ -277,17 +280,17 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   //console.log(endTime - startTime);
   
   const linkMenuCss = `
-  #linkMenu {display: inline-block;}
-  #linkMenu legend {font-size: 12px;}
-  #linkMenu ul {list-style:none;margin:0;padding:0;}
-  #linkMenu li.h2 {margin-left: 10px;font-size: 16px;}
-  #linkMenu li.h3 {margin-left: 20px;font-size: 16px;}
-  #linkMenu li.h4 {margin-left: 30px;font-size: 16px;}
-  #linkMenu li.h5 {margin-left: 40px;font-size: 16px;}
-  #linkMenu li.h6 {margin-left: 40px;font-size: 16px;}
-  #linkMenu li a{font-size: 12px;}
-  #linkMenu li.h1 a{font-size: 14px;}
-  #linkMenu li.h2 a{font-size: 13px;}
+#linkMenu {display: inline-block;}
+#linkMenu legend {font-size: 12px;}
+#linkMenu ul {list-style:none;margin:0;padding:0;}
+#linkMenu li.h2 {margin-left: 10px;font-size: 16px;}
+#linkMenu li.h3 {margin-left: 20px;font-size: 16px;}
+#linkMenu li.h4 {margin-left: 30px;font-size: 16px;}
+#linkMenu li.h5 {margin-left: 40px;font-size: 16px;}
+#linkMenu li.h6 {margin-left: 40px;font-size: 16px;}
+#linkMenu li a{font-size: 12px;}
+#linkMenu li.h1 a{font-size: 14px;}
+#linkMenu li.h2 a{font-size: 13px;}
   `;
 
   const head = '<style type="text/css">\n' + $("#customCss").text() + linkMenuCss + '</style><div class="a4">\n';
@@ -326,7 +329,26 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   }
   sanitizedContent = $(sanitizedDom).html();
 
-  sanitizedContent = `<!DOCTYPE HTML><html lang="jp"><head><title>${filename}</title></head><body>${sanitizedContent}</body></html>`;
+  //https://stackoverflow.com/questions/4535816/how-to-use-font-face-on-a-chrome-extension-in-a-content-script
+  const fontsUrl = browser.extension.getURL("fonts");
+  const style = `
+  <style type="text/css">
+  @font-face {
+    font-family: "Koruri";
+    src: url("${fontsUrl}/Koruri-Regular.ttf");
+  }
+  @font-face {
+    font-family: "Koruri";
+    src: url("${fontsUrl}/Koruri-Bold.ttf");
+    font-weight: bold;
+  }
+  body {
+    font-family: "Koruri";
+  }
+  </style>
+  `;
+
+  sanitizedContent = `<!DOCTYPE HTML><html lang="jp"><head><title>${filename}</title>${style}</head><body>${sanitizedContent}</body></html>`;
   //console.log(sanitizedContent);
 
   if($("[type='radio'][name='htmlSave'][value='save']").is(":checked")){
