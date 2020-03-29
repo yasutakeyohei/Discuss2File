@@ -1,35 +1,11 @@
 @charset "UTF-8";
-/* ===================================================================
 
-common style
-
-=================================================================== */
-/* ===================================================================
-
-setting 変数定義をここに記載していく
-
-=================================================================== */
 body, button {
   font-family: "Roboto", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", 'メイリオ', Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ===================================================================
-
-define style
-
-=================================================================== */
-/* ===================================================================
-
-mixin style
-
-=================================================================== */
-/* ===================================================================
-
-base style
-
-=================================================================== */
 html {
   font-size: 62.5%;
 }
@@ -44,10 +20,12 @@ body {
 form {
   padding: 15px;
 }
+
 form legend {
   font-size: 1.2em;
   text-align: center;
 }
+
 form input:focus {
   outline: none;
 }
@@ -55,6 +33,16 @@ form input:focus {
 form input[type=text] {
   box-sizing: border-box;
   width: 100%;
+}
+
+form input[type=number] {
+  width: 34px;
+  font-size: 12px;
+  margin-left: 5px;
+}
+
+form select {
+  margin-left: 5px;
 }
 
 form .container {
