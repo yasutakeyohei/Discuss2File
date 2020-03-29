@@ -249,10 +249,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
       replace = replace.replace(/\{baseUrl\}/g, baseUrl);
 
       const r = new RegExp(regex, flag);
-      console.log(parsedContent);
-      console.log(r);
       parsedContent = parsedContent.replace(r, replace);
-      console.log(parsedContent);
     } else {
       err = { index: i + 1, message: "置換文字列が見つかりません" + replace.length };
       break;
@@ -342,8 +339,17 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
     src: url("${fontsUrl}/Koruri-Bold.ttf");
     font-weight: bold;
   }
+  @font-face {
+    font-family: "UDD";
+    src: local("UD デジタル 教科書体 N-R");
+  }
+  @font-face {
+    font-family: "UDD";
+    src: local("UD デジタル 教科書体 N-B");
+    font-weight: bold;
+  }
   body {
-    font-family: "Koruri";
+    font-family: "UDD";
   }
   </style>
   `;
