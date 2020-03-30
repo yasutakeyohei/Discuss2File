@@ -11,73 +11,92 @@
 <body>
     <div id="loading" style="display:none;"><img src="images/icon/icon_loader.gif"><span></span></div>
     <form id="form">
-        <fieldset>
-            <div id="councils"></div>
-            <div id="schedules"></div>
-        </fieldset>
-        <div class="toggler" data-role="toggler" data-options="置換設定＞,＜閉じる" data-actions="hide,show">置換設定＞</div>
-        <fieldset style="display:none;">
-            置換用正規表現 <span class="tooltip">(?)<span
-                    class="tooltiptext">文書中に含まれる文字列を正規表現で検索し置換することで、多彩な表現が可能になります。詳しくはプラグインの説明をご覧ください。</span></span>
-            <textarea id="replaceRegex" name="replaceRegex"></textarea>
-            <div id="replaceRegexErr" style="display:none;"></div>
-            CSS <span class="tooltip">(?)<span class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span>
-            <textarea id="customCss" name="customCss"></textarea>
-            <div id="customCssErr" style="display:none;"></div>
-            <label><input type="checkbox" id="addMenu" name="addMenu" checked="checked">自動作成目次を追加</label><span
-                class="tooltip">(?)<span
-                    class="tooltiptext">正規表現でh1-h6タグを追加すると、それらのタグへのリンクを自動的に作成し、ページの先頭に「自動作成目次」として追加します。詳しくはプラグインの説明をご覧ください。</span></span>
-            <div class="select-city">
-                <select id="cityRegexSelect">
-                    <option value="tokyo-kodaira-shi">東京都 小平市</option>
-                </select><input data-role="loadCityRegex" type="button" value="の設定をロード" />
-            </div>
-        </fieldset>
-        <hr>
-        <fieldset>
-            <label><input type="radio" name="htmlSave" value="print" checked="checked">印刷画面を開く（PDF保存）</label> <span
-                class="tooltip">(?)<span
-                    class="tooltiptext left">下のDownloadボタンをクリックすると印刷用画面（印刷ダイアログ）が表示されます。その画面で、送信先を「PDFで保存」にして「保存」ボタンを押すと、PDFファイルで保存できます。</span></span><br>
-            <label><input type="radio" name="htmlSave" value="save">ファイルに保存</label>
-            （<label><input type="radio" name="fileType" value="html" checked="checked">HTML</label>
-            <label><input type="radio" name="fileType" value="txt" disabled="disabled">TXT</label>）
-            <span class="tooltip">(?)<span class="tooltiptext left">ファイルの拡張子を選択します。ブラウザで多彩に表現できるHTML形式か、通常のテキスト(txt）形式を選択します。テキスト形式は現在使えません。</span></span><br>
-            <div class="toggler" data-role="toggler" data-options="フォント設定＞,＜閉じる" data-actions="hide,show">フォント設定＞</div>
-            <div class="flex-split" style="display:none;">
-                <div>
-                    <label>
-                        <select name="fontFamily">
-                            <option value="udd">UD デジタル 教科書体</option>
-                            <option value="koruri">Koruri</option>
-                        </select>
-                    </label><br>
-                    <label>基準文字サイズ <input type="number" name="fontSize" min="8.0" max="20.0" step="0.5" value="12">px</label><br>
-                    <label>行間 <input type="number" name="lineHeight" min="1.0" max="3.0" step="0.1" value="1.8"></label>
-                    <label>文字間 <input type="number" name="letterSpacing" min="0" max="2.0" step="0.1" value="0">px</label>
+        <div class="wrapper">
+            <div class="tabs">
+                <div class="tab">
+                    <input type="radio" name="tabs" id="tab1" checked class="tabSwitch" />
+                    <label for="tab1" role="tab" aria-selected="true" aria-controls="tabContent1" tabindex="0" class="tabLabel">ダウンロード</label>
+                    <div id="tabContent1" class="tabContent" role="tabpanel" aria-labelledby="ダウンロード" aria-hidden="false">
+                        <fieldset>
+                            <div id="councils"></div>
+                            <div id="schedules"></div>
+                        </fieldset>
+                        <fieldset>
+                            <label><input type="radio" name="htmlSave" value="print"
+                                    checked="checked">印刷画面を開く（PDF保存）</label> <span class="tooltip">(?)<span
+                                    class="tooltiptext left">下のDownloadボタンをクリックすると印刷用画面（印刷ダイアログ）が表示されます。その画面で、送信先を「PDFで保存」にして「保存」ボタンを押すと、PDFファイルで保存できます。</span></span><br>
+                            <label><input type="radio" name="htmlSave" value="save">ファイルに保存</label>
+                            （<label><input type="radio" name="fileType" value="html" checked="checked">HTML</label>
+                            <label><input type="radio" name="fileType" value="txt" disabled="disabled">TXT</label>）
+                            <span class="tooltip">(?)<span
+                                    class="tooltiptext left">ファイルの拡張子を選択します。ブラウザで多彩に表現できるHTML形式か、通常のテキスト(txt）形式を選択します。テキスト形式は現在使えません。</span></span><br>
+                        </fieldset>
+                        <hr>
+                        <fieldset>
+                            <div class="flex-split">
+                                <label for="filename">ファイル名：</label>
+                                <div class="right">
+                                    <label><input type="checkbox" id="removeSpacesFromFilename"
+                                            name="removeSpacesFromFilename" checked="checked">空白削除</label>
+                                    <label><input type="checkbox" id="hankakuNumber" name="hankakuNumber"
+                                            checked="checked">数字を半角に</label>
+                                </div>
+                            </div>
+                            <input type="text" id="filename" name="filename" size="30">
+                            <button id="download">
+                                <p class="icon-wrapper">
+                                    <span class="icon-download"></span>
+                                </p>
+                                <span>Download</span>
+                            </button>
+                            <div id="downloadLink"></div>
+                        </fieldset>
+                    </div>
                 </div>
-                <div class="sampleTxt">サンプル文章<br>さんぷる文章</div>
-            </div>
-    </fieldset>
-        <hr>
-        <fieldset>
-            <div class="flex-split">
-                <label for="filename">ファイル名：</label>
-                <div class="right">
-                    <label><input type="checkbox" id="removeSpacesFromFilename" name="removeSpacesFromFilename"
-                            checked="checked">空白削除</label>
-                    <label><input type="checkbox" id="hankakuNumber" name="hankakuNumber"
-                            checked="checked">数字を半角に</label>
+                <div class="tab">
+                    <input type="radio" name="tabs" id="tab2" class="tabSwitch" />
+                    <label for="tab2" role="tab" aria-selected="false" aria-controls="tabContent2"
+                        tabindex="1" class="tabLabel">フォント設定</label>
+                    <div id="tabContent2" class="tabContent" role="tabpanel" aria-labelledby="フォント設定" aria-hidden="true">
+                        <div>
+                            <label>
+                                <select name="fontFamily">
+                                    <option value="udd">UD デジタル 教科書体</option>
+                                    <option value="koruri">Koruri</option>
+                                </select>
+                            </label><br>
+                            <label>基準文字サイズ <input type="number" name="fontSize" min="8.0" max="20.0" step="0.5"
+                                    value="12">px</label><br>
+                            <label>行間 <input type="number" name="lineHeight" min="1.0" max="3.0" step="0.1"
+                                    value="1.8"></label>
+                            <label>文字間 <input type="number" name="letterSpacing" min="0" max="2.0" step="0.1"
+                                    value="0">px</label>
+                        </div>
+                        <div class="sampleTxt">サンプル文章<br>さんぷる文章</div>
+                    </div>
+                </div>
+                <div class="tab">
+                    <input type="radio" name="tabs" id="tab3" class="tabSwitch" />
+                    <label for="tab3" role="tab" aria-selected="false" aria-controls="tabContent3" tabindex="2" class="tabLabel">正規表現</label>
+                    <div id="tabContent3" class="tabContent" role="tabpanel" aria-labelledby="正規表現" aria-hidden="true">
+                        置換用正規表現 <span class="tooltip">(?)<span
+                                class="tooltiptext">文書中に含まれる文字列を正規表現で検索し置換することで、多彩な表現が可能になります。詳しくはプラグインの説明をご覧ください。</span></span>
+                        <textarea id="replaceRegex" name="replaceRegex"></textarea>
+                        <div id="replaceRegexErr" style="display:none;"></div>
+                        CSS <span class="tooltip">(?)<span class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span>
+                        <textarea id="customCss" name="customCss"></textarea>
+                        <div id="customCssErr" style="display:none;"></div>
+                        <label><input type="checkbox" id="addMenu" name="addMenu" checked="checked">自動作成目次を追加</label><span
+                            class="tooltip">(?)<span
+                                class="tooltiptext righttop">正規表現でh1-h6タグを追加すると、それらのタグへのリンクを自動的に作成し、ページの先頭に「自動作成目次」として追加します。詳しくはプラグインの説明をご覧ください。</span></span>
+                        <div class="select-city">
+                            <select id="cityRegexSelect">
+                                <option value="tokyo-kodaira-shi">東京都 小平市</option>
+                            </select><input data-role="loadCityRegex" type="button" value="の設定をロード" />
+                        </div>
                 </div>
             </div>
-            <input type="text" id="filename" name="filename" size="30">
-            <button id="download">
-                <p class="icon-wrapper">
-                    <span class="icon-download"></span>
-                </p>
-                <span>Download</span>
-            </button>
-            <div id="downloadLink"></div>
-        </fieldset>
+        </div>
     </form>
     <script src="js/constants.js"></script>
     <script src="js/jquery-2.1.1.min.js"></script>
