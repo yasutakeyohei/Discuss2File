@@ -1,4 +1,7 @@
 @charset "UTF-8";
+* {
+  box-sizing: border-box;
+}
 
 body, button {
   font-family: "Roboto", "ヒラギノ角ゴシック Pro", "Hiragino Kaku Gothic Pro", 'メイリオ', Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
@@ -11,18 +14,17 @@ html {
 }
 
 body {
-  font-size: 1.4rem;
   margin: 0;
   min-width: 340px;
   position: relative;
 }
 
 form {
-  padding: 15px;
+  padding: 5px;
+  font-size: 1.2rem;
 }
 
 form legend {
-  font-size: 1.2em;
   text-align: center;
 }
 
@@ -36,13 +38,14 @@ form input[type=text] {
 }
 
 form input[type=number] {
-  width: 34px;
-  font-size: 12px;
-  margin-left: 5px;
+  width: 4rem;
 }
 
 form select {
-  margin-left: 5px;
+  vertical-align: bottom;
+  height: 2rem;
+  min-width: 180px;
+  max-width: 180px;
 }
 
 form .container {
@@ -62,6 +65,89 @@ form fieldset {
   border: none;
   margin: 0;
   padding: 0;
+}
+
+form div .sampleTxt {
+  overflow: auto;
+  border: 1px dotted gray;
+  min-width: 120px;
+  max-width: 120px;
+  margin-left: auto;
+  margin-right: 0;
+  resize: both;
+  width: 100%;
+}
+
+label:focus {
+  outline: none;
+}
+.wrapper {
+  width: 100%;
+  margin: 0 auto;
+}
+.tabs {
+  position: relative;
+  height: 2.0rem;
+}
+.tabs::before,
+.tabs::after {
+  content: "";
+  display: table;
+}
+.tabs::after {
+  clear: both;
+}
+.tab {
+  float: left;
+}
+.tabSwitch {
+  display: none;
+}
+.tabLabel {
+  position: relative;
+  display: block;
+  line-height: 1.8rem;
+  height: 2.1rem;
+  padding: 2px 8px;
+  background: darkgray;
+  border-right: 0.125rem solid gray;
+  color: #fff;
+  cursor: pointer;
+  top: 0;
+  transition: all 0.25s;
+}
+.tabLabel:hover {
+  top: -2px;
+  transition: top 0.25s;
+  height: 2.2rem;
+}
+.tabContent {
+  position: absolute;
+  z-index: -1;
+  top: 1.9rem;
+  left: 0;
+  padding: 6px;
+  background: #fff;
+  opacity: 0;
+  transition: all 0.35s;
+  width: 100%;
+  border: 1px solid gray;
+  margin-bottom: 5px;
+}
+.tabSwitch:checked + .tabLabel {
+  background: #fff;
+  color: #000;
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+  border-right: 1px solid gray;
+  transition: all 0.35s;
+  z-index: 3;
+  top: -1px;
+}
+.tabSwitch:checked + label + .tabContent {
+  z-index: 2;
+  opacity: 1;
+  transition: all 0.35s;
 }
 
 #loading {
@@ -86,7 +172,7 @@ form fieldset {
 /* Tooltip text */
 .tooltip .tooltiptext {
   visibility: hidden;
-  width: 150px;
+  width: 170px;
   background-color: #fff;
   color: #000;
   text-align: left;
@@ -107,6 +193,10 @@ form fieldset {
 .tooltip .left {
   top: -5px;
   right: 105%;
+}
+
+.tooltip .righttop {
+  top: -100px;
 }
 
 textarea {
