@@ -41,15 +41,23 @@
             <label><input type="radio" name="htmlSave" value="save">ファイルに保存</label>
             （<label><input type="radio" name="fileType" value="html" checked="checked">HTML</label>
             <label><input type="radio" name="fileType" value="txt" disabled="disabled">TXT</label>）
-            <span class="tooltip">(?)<span
-                    class="tooltiptext left">ファイルの拡張子を選択します。ブラウザで多彩に表現できるHTML形式か、通常のテキスト(txt）形式を選択します。テキスト形式は現在使えません。</span></span><br>
-            <label>フォント<select>
-                    <option value="udd">UD デジタル 教科書体</option>
-                    <option value="koruri">Koruri</option>
-                </select></label><br>
-            <label>行間<input type="number" name="lineHeight" min="1.0" max="3.0" step="0.1" value="1.8"></label>
-            <label>文字間<input type="number" name="letterSpacing" min="0" max="2.0" step="0.1" value="0"></label>
-        </fieldset>
+            <span class="tooltip">(?)<span class="tooltiptext left">ファイルの拡張子を選択します。ブラウザで多彩に表現できるHTML形式か、通常のテキスト(txt）形式を選択します。テキスト形式は現在使えません。</span></span><br>
+            <div class="toggler" data-role="toggler" data-options="フォント設定＞,＜閉じる" data-actions="hide,show">フォント設定＞</div>
+            <div class="flex-split" style="display:none;">
+                <div>
+                    <label>
+                        <select name="fontFamily">
+                            <option value="udd">UD デジタル 教科書体</option>
+                            <option value="koruri">Koruri</option>
+                        </select>
+                    </label><br>
+                    <label>基準文字サイズ <input type="number" name="fontSize" min="8.0" max="20.0" step="0.5" value="12">px</label><br>
+                    <label>行間 <input type="number" name="lineHeight" min="1.0" max="3.0" step="0.1" value="1.8"></label>
+                    <label>文字間 <input type="number" name="letterSpacing" min="0" max="2.0" step="0.1" value="0">px</label>
+                </div>
+                <div class="sampleTxt">サンプル文章<br>さんぷる文章</div>
+            </div>
+    </fieldset>
         <hr>
         <fieldset>
             <div class="flex-split">
