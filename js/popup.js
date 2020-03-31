@@ -2,6 +2,30 @@ let content = {}; // see singleMinuteParase or councilsParser
 let fontModule = null;
 let urlInfo = { cityName: "", pageMode: -1 }
 
+const fontsUrl = browser.extension.getURL("fonts");
+const fontsStyle = `
+<style type="text/css" id="fontsStyle">
+@font-face {
+  font-family: "Koruri";
+  src: url("${fontsUrl}/Koruri-Regular.ttf");
+}
+@font-face {
+  font-family: "Koruri";
+  src: url("${fontsUrl}/Koruri-Bold.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: "UDD";
+  src: local("UD デジタル 教科書体 N-R");
+}
+@font-face {
+  font-family: "UDD";
+  src: local("UD デジタル 教科書体 N-B");
+  font-weight: bold;
+}
+</style>
+`;
+
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -211,7 +235,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
 
   //const startTime = performance.now();
 
-  let regexes = $("#replaceRegex").text().split(/\r?\n/g);
+  let regexes = $("#replaceRegex").val().split(/\r?\n/g);
   //console.log(regexes);
 
   // regex parse
@@ -249,6 +273,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
       replace = replace.replace(/\{baseUrl\}/g, baseUrl);
 
       const r = new RegExp(regex, flag);
+      console.log(parsedContent);
       parsedContent = parsedContent.replace(r, replace);
     } else {
       err = { index: i + 1, message: "置換文字列が見つかりません" + replace.length };
@@ -290,7 +315,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
 #linkMenu li.h2 a{font-size: 13px;}
   `;
 
-  const head = '<style type="text/css">\n' + $("#customCss").text() + linkMenuCss + '</style><div class="a4">\n';
+  const head = '<style type="text/css">\n' + $("#customCss").val() + linkMenuCss + '</style><div class="a4">\n';
   const foot = '</div>';
 
   parsedContent = head + parsedContent + foot;
@@ -327,34 +352,14 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   sanitizedContent = $(sanitizedDom).html();
 
   //https://stackoverflow.com/questions/4535816/how-to-use-font-face-on-a-chrome-extension-in-a-content-script
-  const fontsUrl = browser.extension.getURL("fonts");
-  const style = `
-  <style type="text/css">
-  @font-face {
-    font-family: "Koruri";
-    src: url("${fontsUrl}/Koruri-Regular.ttf");
-  }
-  @font-face {
-    font-family: "Koruri";
-    src: url("${fontsUrl}/Koruri-Bold.ttf");
-    font-weight: bold;
-  }
-  @font-face {
-    font-family: "UDD";
-    src: local("UD デジタル 教科書体 N-R");
-  }
-  @font-face {
-    font-family: "UDD";
-    src: local("UD デジタル 教科書体 N-B");
-    font-weight: bold;
-  }
+
+  /*
   body {
     font-family: "UDD";
   }
-  </style>
-  `;
+  */
 
-  sanitizedContent = `<!DOCTYPE HTML><html lang="jp"><head><title>${filename}</title>${style}</head><body>${sanitizedContent}</body></html>`;
+  sanitizedContent = `<!DOCTYPE HTML><html lang="jp"><head><title>${filename}</title>${fontsStyle}</head><body>${sanitizedContent}</body></html>`;
   //console.log(sanitizedContent);
 
   if($("[type='radio'][name='htmlSave'][value='save']").is(":checked")){
@@ -371,17 +376,16 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
     w.print();
     w.close();
   }
-
 }
 
 const saveOptions = async () => {
   let options = [];
-  $("[type=radio], [type=checkbox]").each((idx, elm) => {
+  $("[type=radio]:not([name='tabs']), [type=checkbox]").each((idx, elm) => {
     options.push({type: elm.type, name: elm.name, value: elm.value, checked: elm.checked});
   });
 
-  $("textarea").each((idx, elm) => {
-    options.push({type: "textarea", name: elm.name, value: elm.value, checked: null});
+  $("textarea, [name=fontFamily], [name=fontSize], [name=lineHeight], [name=letterSpacing]").each((idx, elm) => {
+    options.push({type: elm.type, name: elm.name, value: elm.value, checked: null});
   });
 
   await browser.storage.local.set({ 'options': options });
@@ -391,17 +395,17 @@ const loadOptions = async () => {
   const data = await browser.storage.local.get('options');
   
   if (data && data.options) {
-    $("[type=radio], [type=checkbox]").each((idx, elm) => {
+    $("[type=radio]:not([name='tabs']), [type=checkbox]").each((idx, elm) => {
       const obj = data.options.find(item => {
         return (item.type === elm.type && item.name === elm.name && item.value === elm.value);
       });
       if(obj && obj.checked) $(elm).prop("checked", true);
     });
-    $("textarea").each((idx, elm) => {
+    $("textarea, [name=fontFamily], [name=fontSize], [name=lineHeight], [name=letterSpacing]").each((idx, elm) => {
       const obj = data.options.find(item => {
-        return (item.type === "textarea" && item.name === elm.name);
+        return (item.type === elm.type && item.name === elm.name);
       });
-      if(obj && obj.value) $(elm).text(obj.value);
+      if(obj && obj.value) $(elm).val(obj.value);
     });
   }
 }
@@ -416,7 +420,21 @@ const hankakuNumber = () => {
   }
 }
 
+const updateFontSettingSampleText = () => {
+  const fontFamily = $("select[name=fontFamily]").val();
+  const fontSize = $("[name=fontSize]").val();
+  const lineHeight = $("[name=lineHeight]").val();
+  const letterSpacing = $("[name=letterSpacing]").val();
+
+  $("#sampleText").css("font-family", fontFamily);
+  $("#sampleText").css("font-size", fontSize + "px");
+  $("#sampleText").css("line-height", lineHeight);
+  $("#sampleText").css("letter-spacing", letterSpacing + "px");
+  
+}
+
 const main = async () => {
+  $("head").append(fontsStyle);
   await loadOptions();
   const tabs = await browser.tabs.query({'active': true, 'lastFocusedWindow': true});
   const url = tabs[0].url;
@@ -432,6 +450,8 @@ const main = async () => {
     urlInfo.pageMode = PAGE_MODE_YEARLY;
   }
  
+  updateFontSettingSampleText();
+
   //toggler
   $('[data-role=toggler]').each((idx, elm) => {
     $(elm).on( 'click', () => {
@@ -456,12 +476,12 @@ const main = async () => {
       const cityName = $("#cityRegexSelect").val();
       let module = await import("./regexes/" + cityName + "-regex.js");
       if (module.regexes && module.regexes.length > 0) {
-        $("#replaceRegex").text(module.regexes);
+        $("#replaceRegex").val(module.regexes);
         saveOptions();
       }
       module = await import("./regexes/" + cityName + "-css.js");
       if (module.css && module.css.length > 0) {
-        $("#customCss").text(module.css);
+        $("#customCss").val(module.css);
         saveOptions();
       }
     }
@@ -472,6 +492,22 @@ const main = async () => {
     saveOptions();
     if(urlInfo.pageMode === PAGE_MODE_SINGLE) awaitParseSingleMinute(MODE_SINGLE_MINUTE_PARSE);
   });
+
+  //tab changed
+  $("[name=tabs]").change(() => {
+    if($("#tab3").is(":checked")){
+      $("body").addClass("wide").show('slow');
+    } else {
+      $("body").removeClass("wide");      
+    }
+  });
+
+  //font settings changed
+  $("#fontSettings select, #fontSettings input").change(() => {
+    updateFontSettingSampleText();
+    saveOptions();
+  });
+
 
   $("textarea").on( 'keyup', () => {
     saveOptions();
