@@ -58,33 +58,36 @@
                     <label for="tab2" role="tab" aria-selected="false" aria-controls="tabContent2"
                         tabindex="1" class="tabLabel">フォント設定</label>
                     <div id="tabContent2" class="tabContent" role="tabpanel" aria-labelledby="フォント設定" aria-hidden="true">
-                        <div>
+                        <div id="fontSettings">
                             <label>
                                 <select name="fontFamily">
                                     <option value="udd">UD デジタル 教科書体</option>
                                     <option value="koruri">Koruri</option>
                                 </select>
-                            </label><br>
-                            <label>基準文字サイズ <input type="number" name="fontSize" min="8.0" max="20.0" step="0.5"
+                            </label>
+                            <label>基準サイズ <input type="number" name="fontSize" min="8.0" max="20.0" step="0.5"
                                     value="12">px</label><br>
-                            <label>行間 <input type="number" name="lineHeight" min="1.0" max="3.0" step="0.1"
-                                    value="1.8"></label>
-                            <label>文字間 <input type="number" name="letterSpacing" min="0" max="2.0" step="0.1"
-                                    value="0">px</label>
+                            <div class="fontSpacing">
+                                <label>行間 <input type="number" name="lineHeight" min="1.0" max="3.0" step="0.1"
+                                        value="1.8"></label>
+                                <label>文字間 <input type="number" name="letterSpacing" min="0" max="2.0" step="0.1"
+                                        value="0">px</label> <span class="tooltip">(?)<span
+                                            class="tooltiptext left">ここで指定する以外の独自フォント設定を使いたい場合は、正規表現設定を使用してください。<br>chrome印刷機能でPDFを作成する際「游明朝」などのフォントを使うと正常に文字検索できません。詳細は説明をご確認ください。</span></span>
+                            </div>
                         </div>
-                        <div class="sampleTxt">サンプル文章<br>さんぷる文章</div>
+                        <div class="sampleText" id="sampleText">これはサンプル文章です。<br>皆さまご存じですか？小平市には<strong>ブルベー</strong>という、ふしぎな生き物がいます。<strong>小平市民まつり</strong>にも来ているよ。<br>体重はブルーベリー1パック分の<strong>500グラム</strong>。風で飛んでしまわないか心配。<br><strong>趣味は光合成</strong>。小平市には光合成サークルあるのかな？</div>
                     </div>
                 </div>
                 <div class="tab">
                     <input type="radio" name="tabs" id="tab3" class="tabSwitch" />
-                    <label for="tab3" role="tab" aria-selected="false" aria-controls="tabContent3" tabindex="2" class="tabLabel">正規表現</label>
-                    <div id="tabContent3" class="tabContent" role="tabpanel" aria-labelledby="正規表現" aria-hidden="true">
-                        置換用正規表現 <span class="tooltip">(?)<span
-                                class="tooltiptext">文書中に含まれる文字列を正規表現で検索し置換することで、多彩な表現が可能になります。詳しくはプラグインの説明をご覧ください。</span></span>
-                        <textarea id="replaceRegex" name="replaceRegex"></textarea>
-                        <div id="replaceRegexErr" style="display:none;"></div>
-                        CSS <span class="tooltip">(?)<span class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span>
-                        <textarea id="customCss" name="customCss"></textarea>
+                    <label for="tab3" role="tab" aria-selected="false" aria-controls="tabContent3" tabindex="2" class="tabLabel">正規表現設定</label>
+                    <div id="tabContent3" class="tabContent" role="tabpanel" aria-labelledby="正規表現設定" aria-hidden="true">
+                        <label>置換用正規表現 <span class="tooltip">(?)<span
+                                class="tooltiptext">文書中に含まれる文字列を正規表現で検索し置換することで、多彩な表現が可能になります。詳しくはプラグインの説明をご覧ください。</span></span><br>
+                        <textarea id="replaceRegex" name="replaceRegex"></textarea></label>
+                        <div id="replaceRegexErr" style="display:none;"></div><br>
+                        <label>CSS <span class="tooltip">(?)<span class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span><br>
+                        <textarea id="customCss" name="customCss"></textarea></label><br>
                         <div id="customCssErr" style="display:none;"></div>
                         <label><input type="checkbox" id="addMenu" name="addMenu" checked="checked">自動作成目次を追加</label><span
                             class="tooltip">(?)<span
