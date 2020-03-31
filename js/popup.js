@@ -1,10 +1,6 @@
-let content = {}; // see singleMinuteParase or councilsParser
-let fontModule = null;
-let urlInfo = { cityName: "", pageMode: -1 }
-
 const fontsUrl = browser.extension.getURL("fonts");
-const fontsStyle = `
-<style type="text/css" id="fontsStyle">
+const fontFaceStyle = `
+<style type="text/css" id="fontFaceStyle">
 @font-face {
   font-family: "Koruri";
   src: url("${fontsUrl}/Koruri-Regular.ttf");
@@ -25,6 +21,15 @@ const fontsStyle = `
 }
 </style>
 `;
+
+let fontStyle = `
+<style type="text/css" id="fontStyle"></style>
+`;
+
+let content = {}; // see singleMinuteParase or councilsParser
+let fontModule = null;
+let urlInfo = { cityName: "", pageMode: -1 }
+
 
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -273,8 +278,8 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
       replace = replace.replace(/\{baseUrl\}/g, baseUrl);
 
       const r = new RegExp(regex, flag);
-      console.log(parsedContent);
       parsedContent = parsedContent.replace(r, replace);
+      console.log(r, parsedContent);
     } else {
       err = { index: i + 1, message: "置換文字列が見つかりません" + replace.length };
       break;
@@ -301,21 +306,21 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   //const endTime = performance.now(); // 終了時間
   //console.log(endTime - startTime);
   
-  const linkMenuCss = `
+  const defaultLinkMenuCss = `
 #linkMenu {display: inline-block;}
-#linkMenu legend {font-size: 12px;}
+#linkMenu legend {font-size: 1rem;}
 #linkMenu ul {list-style:none;margin:0;padding:0;}
-#linkMenu li.h2 {margin-left: 10px;font-size: 16px;}
-#linkMenu li.h3 {margin-left: 20px;font-size: 16px;}
-#linkMenu li.h4 {margin-left: 30px;font-size: 16px;}
-#linkMenu li.h5 {margin-left: 40px;font-size: 16px;}
-#linkMenu li.h6 {margin-left: 40px;font-size: 16px;}
-#linkMenu li a{font-size: 12px;}
-#linkMenu li.h1 a{font-size: 14px;}
-#linkMenu li.h2 a{font-size: 13px;}
+#linkMenu li.h2 {margin-left: 10px;}
+#linkMenu li.h3 {margin-left: 20px;}
+#linkMenu li.h4 {margin-left: 30px;}
+#linkMenu li.h5 {margin-left: 40px;}
+#linkMenu li.h6 {margin-left: 40px;}
+#linkMenu li a{font-size: 0.8rem;}
+#linkMenu li.h1 a{font-size: 1rem;}
+#linkMenu li.h2 a{font-size: 0.9rem;}
   `;
 
-  const head = '<style type="text/css">\n' + $("#customCss").val() + linkMenuCss + '</style><div class="a4">\n';
+  const head = '<style type="text/css">\n' + defaultLinkMenuCss + $("#customCss").val() + '</style><div class="a4">';
   const foot = '</div>';
 
   parsedContent = head + parsedContent + foot;
@@ -359,7 +364,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   }
   */
 
-  sanitizedContent = `<!DOCTYPE HTML><html lang="jp"><head><title>${filename}</title>${fontsStyle}</head><body>${sanitizedContent}</body></html>`;
+  sanitizedContent = `<!DOCTYPE HTML><html lang="jp"><head><title>${filename}</title>${fontFaceStyle}${fontStyle}</head><body>${sanitizedContent}</body></html>`;
   //console.log(sanitizedContent);
 
   if($("[type='radio'][name='htmlSave'][value='save']").is(":checked")){
@@ -429,12 +434,22 @@ const updateFontSettingSampleText = () => {
   $("#sampleText").css("font-family", fontFamily);
   $("#sampleText").css("font-size", fontSize + "px");
   $("#sampleText").css("line-height", lineHeight);
-  $("#sampleText").css("letter-spacing", letterSpacing + "px");
-  
+  $("#sampleText").css("letter-spacing", letterSpacing + "px"); 
+
+  fontStyle = `
+  <style type="text/css" id="fontStyle">
+  body {
+    font-family: ${fontFamily};
+    font-size: ${fontSize}px;
+    line-height: ${lineHeight};
+    letter-spacing: ${letterSpacing};
+  }
+  </style>
+    `;
 }
 
 const main = async () => {
-  $("head").append(fontsStyle);
+  $("head").append(fontFaceStyle);
   await loadOptions();
   const tabs = await browser.tabs.query({'active': true, 'lastFocusedWindow': true});
   const url = tabs[0].url;
