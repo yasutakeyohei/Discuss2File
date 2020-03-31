@@ -1,28 +1,26 @@
 export const css = `
 a {
-  font-size: 8px;
+  font-size: 0.8rem;
   text-decoration: none;
 }
 table {
   border-collapse: collapse;
   border: 1px solid #555;
-  font-size: 12px;
+  font-size: 1rem;
   max-width: 98%;
 }
 table td,
 table th {
   border: 1px solid #333;
 }
-h5 {
-  font-size: 12px;
-}
 .a4 {
   width: 100%;
-  font-size: 12px;
+  font-size: 1rem;
   padding: 10px;
 }
 .ikkatu {
   display: inline-block;
+  margin-bottom: 1rem;
 }
 .ikkatu th {
   text-align: left;
@@ -49,4 +47,9 @@ h2.date {
 .speak-start {
   margin-top: 15px;
 }
+.appendix {
+  color: red;
+  font-weight: bold;
+}
+
 `;
