@@ -1,30 +1,49 @@
 const fontsUrl = browser.extension.getURL("fonts");
 const fontFaceStyle = `
 <style type="text/css" id="fontFaceStyle">
-@font-face {
-  font-family: "Koruri";
-  src: url("${fontsUrl}/Koruri-Regular.ttf");
-}
-@font-face {
-  font-family: "Koruri";
-  src: url("${fontsUrl}/Koruri-Bold.ttf");
-  font-weight: bold;
-}
-@font-face {
-  font-family: "UDD";
-  src: local("UD デジタル 教科書体 N-R");
-}
-@font-face {
-  font-family: "UDD";
-  src: local("UD デジタル 教科書体 N-B");
-  font-weight: bold;
-}
+  @font-face {
+    font-family: "Koruri";
+    src: url("${fontsUrl}/Koruri-Regular.ttf");
+  }
+  @font-face {
+    font-family: "Koruri";
+    src: url("${fontsUrl}/Koruri-Bold.ttf");
+    font-weight: bold;
+  }
+  @font-face {
+    font-family: "UDD";
+    src: local("UD デジタル 教科書体 N-R");
+  }
+  @font-face {
+    font-family: "UDD";
+    src: local("UD デジタル 教科書体 N-B");
+    font-weight: bold;
+  }
 </style>
 `;
 
 let fontStyle = `
-<style type="text/css" id="fontStyle"></style>
+  <style type="text/css" id="fontStyle"></style>
 `;
+
+const defaultStyle = `
+<style type="text/css" id="defaultStyle">
+  h1 { font-size: 1.3rem; }
+  h2 { font-size: 1.1rem; }
+  h3 { font-size: 1.1rem; }
+  #linkMenu {display: inline-block;}
+  #linkMenu legend {font-size: 1rem;}
+  #linkMenu ul {list-style:none;margin:0;padding:0;}
+  #linkMenu li.h2 {margin-left: 10px;}
+  #linkMenu li.h3 {margin-left: 20px;}
+  #linkMenu li.h4 {margin-left: 30px;}
+  #linkMenu li.h5 {margin-left: 40px;}
+  #linkMenu li.h6 {margin-left: 40px;}
+  #linkMenu li a{font-size: 0.8rem;}
+  #linkMenu li.h1 a{font-size: 1rem;}
+  #linkMenu li.h2 a{font-size: 0.9rem;}
+</style>
+`
 
 let content = {}; // see singleMinuteParase or councilsParser
 let fontModule = null;
@@ -306,21 +325,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   //const endTime = performance.now(); // 終了時間
   //console.log(endTime - startTime);
   
-  const defaultLinkMenuCss = `
-#linkMenu {display: inline-block;}
-#linkMenu legend {font-size: 1rem;}
-#linkMenu ul {list-style:none;margin:0;padding:0;}
-#linkMenu li.h2 {margin-left: 10px;}
-#linkMenu li.h3 {margin-left: 20px;}
-#linkMenu li.h4 {margin-left: 30px;}
-#linkMenu li.h5 {margin-left: 40px;}
-#linkMenu li.h6 {margin-left: 40px;}
-#linkMenu li a{font-size: 0.8rem;}
-#linkMenu li.h1 a{font-size: 1rem;}
-#linkMenu li.h2 a{font-size: 0.9rem;}
-  `;
-
-  const head = '<style type="text/css">\n' + defaultLinkMenuCss + $("#customCss").val() + '</style><div class="a4">';
+  const head = '<style type="text/css">\n' + $("#customCss").val() + '</style><div class="a4">';
   const foot = '</div>';
 
   parsedContent = head + parsedContent + foot;
@@ -364,7 +369,20 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   }
   */
 
-  sanitizedContent = `<!DOCTYPE HTML><html lang="jp"><head><title>${filename}</title>${fontFaceStyle}${fontStyle}</head><body>${sanitizedContent}</body></html>`;
+  sanitizedContent = `
+<!DOCTYPE HTML>
+<html lang="jp">
+  <head>
+    <meta charset="utf-8">
+    <title>${filename}</title>
+  ${defaultStyle}
+  ${fontFaceStyle}
+  ${fontStyle}
+  </head>
+  <body>
+${sanitizedContent}
+  </body>
+</html>`;
   //console.log(sanitizedContent);
 
   if($("[type='radio'][name='htmlSave'][value='save']").is(":checked")){
@@ -437,14 +455,14 @@ const updateFontSettingSampleText = () => {
   $("#sampleText").css("letter-spacing", letterSpacing + "px"); 
 
   fontStyle = `
-  <style type="text/css" id="fontStyle">
+<style type="text/css" id="fontStyle">
   body {
     font-family: ${fontFamily};
     font-size: ${fontSize}px;
     line-height: ${lineHeight};
     letter-spacing: ${letterSpacing};
   }
-  </style>
+</style>
     `;
 }
 
