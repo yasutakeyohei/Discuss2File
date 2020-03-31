@@ -32,7 +32,7 @@ export const regexes = String.raw`{長い…を二個分の…に}
 /^○(〈質疑〉)/gm, "<h5>$1</h5>"
 
 {議長・議員・理事者等} 
-/^○(.*(?:（.*）|委員|委員長))[  　](.*)\n/gm, "<div class=\"speak-start\"><strong>$1</strong> $2</div>"
+/^○(.*(?:（.*）|委員|委員長))[ 　](.*)\n/gm, "<div class=\"speak-start\"><strong>$1</strong> $2</div>"
 
 {特定のタグ前後の空白＋改行は削除し、改行を<BR>に}
 /[ 　]*(\n)/gm, "$1"
