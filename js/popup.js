@@ -469,8 +469,16 @@ const updateFontSettingSampleText = () => {
   $("body", d).css("margin", 0);
 }
 
+const removeUnsupportedFont = () => {
+  $("select[name=fontFamily]>option").each((idx, elm) => {
+    if($(elm).val() != "Koruri" && !isInstalledFont($(elm).val())) {
+      $(elm).remove();
+    }
+  });
+}
 
 const main = async () => {
+  removeUnsupportedFont();
   $("head").append(fontFaceStyle);
   await loadOptions();
   const tabs = await browser.tabs.query({'active': true, 'lastFocusedWindow': true});
