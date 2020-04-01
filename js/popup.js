@@ -1,3 +1,8 @@
+const fontFamilyBoldMap = new Map([
+  ["UD デジタル 教科書体 N-R", "UD デジタル 教科書体 N-B"], 
+  ["UD デジタル 教科書体 NP-R", "UD デジタル 教科書体 NP-B"], 
+  ["UD デジタル 教科書体 NK-R", "UD デジタル 教科書体 NK-B"], 
+]);
 const fontsUrl = browser.extension.getURL("fonts");
 const fontFaceStyle = `
 <style type="text/css" id="fontFaceStyle">
@@ -8,15 +13,6 @@ const fontFaceStyle = `
   @font-face {
     font-family: "Koruri";
     src: url("${fontsUrl}/Koruri-Bold.ttf");
-    font-weight: bold;
-  }
-  @font-face {
-    font-family: "UDD";
-    src: local("UD デジタル 教科書体 N-R");
-  }
-  @font-face {
-    font-family: "UDD";
-    src: local("UD デジタル 教科書体 N-B");
     font-weight: bold;
   }
 </style>
@@ -449,22 +445,38 @@ const updateFontSettingSampleText = () => {
   const lineHeight = $("[name=lineHeight]").val();
   const letterSpacing = $("[name=letterSpacing]").val();
 
+  let fontFamilyBold = fontFamilyBoldMap.has(fontFamily) ? fontFamilyBoldMap.get(fontFamily) : fontFamily;
+  fontStyle = `
+<style type="text/css" id="fontStyle">
+  html {
+    font-family: ${fontFamily};
+    font-size: ${fontSize}px;
+    line-height: ${lineHeight};
+    letter-spacing: ${letterSpacing}px;
+  }
+  h1,h2,h3,h4,h5,h6,strong,b {
+    font-family: ${fontFamilyBold};
+  }
+</style>
+    `;
+
+  let content;
+  var d = $("#sampleText")[0].contentWindow.document;
+  content = $("body", d).html();
+  d.open(); d.close();
+  $("head", d).append(fontStyle);
+  $("body", d).html(content);
+  $("body", d).css("margin", 0);
+
+  /*
   $("#sampleText").css("font-family", fontFamily);
   $("#sampleText").css("font-size", fontSize + "px");
   $("#sampleText").css("line-height", lineHeight);
   $("#sampleText").css("letter-spacing", letterSpacing + "px"); 
+  */
 
-  fontStyle = `
-<style type="text/css" id="fontStyle">
-  body {
-    font-family: ${fontFamily};
-    font-size: ${fontSize}px;
-    line-height: ${lineHeight};
-    letter-spacing: ${letterSpacing};
-  }
-</style>
-    `;
 }
+
 
 const main = async () => {
   $("head").append(fontFaceStyle);
