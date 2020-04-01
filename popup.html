@@ -61,11 +61,24 @@
                         <div id="fontSettings">
                             <label>
                                 <select name="fontFamily">
-                                    <option value="udd">UD デジタル 教科書体</option>
-                                    <option value="koruri">Koruri</option>
+                                    <option value="UD デジタル 教科書体 N-R">UD デジタル 教科書体 N-R</option>
+                                    <option value="UD デジタル 教科書体 NP-R">UD デジタル 教科書体 NP-R</option>
+                                    <option value="UD デジタル 教科書体 NK-R">UD デジタル 教科書体 NK-R</option>
+                                    <option value="UD デジタル 教科書体 N-B">UD デジタル 教科書体 N-B</option>
+                                    <option value="UD デジタル 教科書体 NP-B">UD デジタル 教科書体 NP-B</option>
+                                    <option value="UD デジタル 教科書体 NK-B">UD デジタル 教科書体 NK-B</option>
+                                    <option value="Koruri">Koruri</option>
+                                    <option value="HG行書体">HG行書体</option>
+                                    <option value="HGP行書体">HGP行書体</option>
+                                    <option value="ＭＳ ゴシック">ＭＳ ゴシック</option>
+                                    <option value="ＭＳ Ｐゴシック">ＭＳ Ｐゴシック</option>
+                                    <option value="ＭＳ 明朝">ＭＳ 明朝</option>
+                                    <option value="ＭＳ Ｐ明朝">ＭＳ Ｐ明朝</option>
+                                    <option value="HG正楷書体-PRO">HG正楷書体-PRO</option>
+
                                 </select>
                             </label>
-                            <label>基準サイズ <input type="number" name="fontSize" min="8.0" max="20.0" step="0.5"
+                            <label>基準サイズ <input type="number" name="fontSize" min="8.0" max="30.0" step="0.5"
                                     value="12">px</label><br>
                             <div class="fontSpacing">
                                 <label>行間 <input type="number" name="lineHeight" min="1.0" max="3.0" step="0.1"
@@ -75,7 +88,7 @@
                                             class="tooltiptext left">ここで指定する以外の独自フォント設定を使いたい場合は、正規表現設定を使用してください。<br>chrome印刷機能でPDFを作成する際「游明朝」などのフォントを使うと正常に文字検索できません。詳細は説明をご確認ください。</span></span>
                             </div>
                         </div>
-                        <div class="sampleText" id="sampleText">これはサンプル文章です。<br>皆さまご存じですか？小平市には<strong>ブルベー</strong>という、ふしぎな生き物がいます。<strong>小平市民まつり</strong>にも来ているよ。<br>体重はブルーベリー1パック分の<strong>500グラム</strong>。風で飛んでしまわないか心配。<br><strong>趣味は光合成</strong>。小平市には光合成サークルあるのかな？</div>
+                        <iframe class="sampleText" id="sampleText" srcdoc = "<html><head><meta charset='UTF-8'></iframe></head><body>これはサンプル文章です。<br>皆さまご存じですか？小平市には<strong>ブルベー</strong>という、ふしぎな生き物がいます。<strong>小平市民まつり</strong>にも来ているよ。<br>体重はブルーベリー1パック分の<strong>500グラム</strong>。風で飛んでしまわないか心配。<br><strong>趣味は光合成</strong>。小平市には光合成サークルあるのかな？</body></html>"></iframe>
                     </div>
                 </div>
                 <div class="tab">
