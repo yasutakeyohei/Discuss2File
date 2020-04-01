@@ -448,7 +448,7 @@ const updateFontSettingSampleText = () => {
   let fontFamilyBold = fontFamilyBoldMap.has(fontFamily) ? fontFamilyBoldMap.get(fontFamily) : fontFamily;
   fontStyle = `
 <style type="text/css" id="fontStyle">
-  html {
+  html, body {
     font-family: ${fontFamily};
     font-size: ${fontSize}px;
     line-height: ${lineHeight};
@@ -467,14 +467,6 @@ const updateFontSettingSampleText = () => {
   $("head", d).append(fontStyle);
   $("body", d).html(content);
   $("body", d).css("margin", 0);
-
-  /*
-  $("#sampleText").css("font-family", fontFamily);
-  $("#sampleText").css("font-size", fontSize + "px");
-  $("#sampleText").css("line-height", lineHeight);
-  $("#sampleText").css("letter-spacing", letterSpacing + "px"); 
-  */
-
 }
 
 
