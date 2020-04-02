@@ -86,6 +86,26 @@ form div .sampleText {
   height: 150px;
 }
 
+dl {
+  margin: 0;
+}
+dt {
+  font-weight: bold;
+}
+dd {
+  margin-inline-start: 10px;
+}
+
+ol {
+  margin-block-start: 2px;
+  margin-block-end: 2px;
+  padding-inline-start: 15px;
+}
+
+label {
+  user-select: none;
+}
+
 label:focus {
   outline: none;
 }
@@ -116,9 +136,9 @@ label:focus {
   display: block;
   line-height: 1.8rem;
   height: 2.1rem;
-  padding: 2px 8px;
+  padding: 1px 8px;
   background: darkgray;
-  border-right: 0.125rem solid gray;
+  border-right: 1px solid gray;
   color: #fff;
   cursor: pointer;
   top: 0;
@@ -330,3 +350,4 @@ button {
 .select-city input {
   font-size: 12px;
 }
+

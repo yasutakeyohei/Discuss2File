@@ -15,8 +15,10 @@
             <div class="tabs">
                 <div class="tab">
                     <input type="radio" name="tabs" id="tab1" checked class="tabSwitch" />
-                    <label for="tab1" role="tab" aria-selected="true" aria-controls="tabContent1" tabindex="0" class="tabLabel">ダウンロード</label>
-                    <div id="tabContent1" class="tabContent" role="tabpanel" aria-labelledby="ダウンロード" aria-hidden="false">
+                    <label for="tab1" role="tab" aria-selected="true" aria-controls="tabContent1" tabindex="0"
+                        class="tabLabel">ダウンロード</label>
+                    <div id="tabContent1" class="tabContent" role="tabpanel" aria-labelledby="ダウンロード"
+                        aria-hidden="false">
                         <fieldset>
                             <div id="councils"></div>
                             <div id="schedules"></div>
@@ -55,9 +57,10 @@
                 </div>
                 <div class="tab">
                     <input type="radio" name="tabs" id="tab2" class="tabSwitch" />
-                    <label for="tab2" role="tab" aria-selected="false" aria-controls="tabContent2"
-                        tabindex="1" class="tabLabel">フォント設定</label>
-                    <div id="tabContent2" class="tabContent" role="tabpanel" aria-labelledby="フォント設定" aria-hidden="true">
+                    <label for="tab2" role="tab" aria-selected="false" aria-controls="tabContent2" tabindex="1"
+                        class="tabLabel">フォント設定</label>
+                    <div id="tabContent2" class="tabContent" role="tabpanel" aria-labelledby="フォント設定"
+                        aria-hidden="true">
                         <div id="fontSettings">
                             <label>
                                 <select name="fontFamily">
@@ -85,31 +88,62 @@
                                         value="1.8"></label>
                                 <label>文字間 <input type="number" name="letterSpacing" min="0" max="2.0" step="0.1"
                                         value="0">px</label> <span class="tooltip">(?)<span
-                                            class="tooltiptext left">ここで指定する以外の独自フォント設定を使いたい場合は、正規表現設定を使用してください。<br>chrome印刷機能でPDFを作成する際「游明朝」などのフォントを使うと正常に文字検索できません。詳細は説明をご確認ください。</span></span>
+                                        class="tooltiptext left">ここで指定する以外の独自フォント設定を使いたい場合は、正規表現設定を使用してください。<br>chrome印刷機能でPDFを作成する際「游明朝」などのフォントを使うと正常に文字検索できません。詳細は説明をご確認ください。</span></span>
                             </div>
                         </div>
-                        <iframe class="sampleText" id="sampleText" srcdoc = "<html><head><meta charset='UTF-8'></iframe></head><body>これはサンプル文章です。<br>小平市には<strong>ブルベー</strong>という、ふしぎな生き物がいます。<strong>小平市民まつり</strong>にも来ているよ。<br>体重はブルーベリー1パック分の<strong>500グラム</strong>。風で飛んでしまわないのかな。<br><strong>趣味は光合成</strong>。え、光合成？</body></html>"></iframe>
+                        <iframe class="sampleText" id="sampleText"
+                            srcdoc="<html><head><meta charset='UTF-8'></iframe></head><body>これはフォント確認用サンプル文章です。<br>小平市に生息する<strong>ブルベー</strong>の生態は謎に包まれています。体重は<strong>500グラム</strong>、<strong>趣味は光合成</strong>などであり、友達は丸ポスト、こげらんといった情報は得られているものの、どこに住んでいるのか、主食は何か、そもそもなんなのか、分かっていません。</body></html>"></iframe>
                     </div>
                 </div>
                 <div class="tab">
                     <input type="radio" name="tabs" id="tab3" class="tabSwitch" />
-                    <label for="tab3" role="tab" aria-selected="false" aria-controls="tabContent3" tabindex="2" class="tabLabel">正規表現設定</label>
-                    <div id="tabContent3" class="tabContent" role="tabpanel" aria-labelledby="正規表現設定" aria-hidden="true">
+                    <label for="tab3" role="tab" aria-selected="false" aria-controls="tabContent3" tabindex="2"
+                        class="tabLabel">正規表現設定</label>
+                    <div id="tabContent3" class="tabContent" role="tabpanel" aria-labelledby="正規表現設定"
+                        aria-hidden="true">
                         <label>置換用正規表現 <span class="tooltip">(?)<span
-                                class="tooltiptext">文書中に含まれる文字列を正規表現で検索し置換することで、多彩な表現が可能になります。詳しくはプラグインの説明をご覧ください。</span></span><br>
-                        <textarea id="replaceRegex" name="replaceRegex"></textarea></label>
+                                    class="tooltiptext">文書中に含まれる文字列を正規表現で検索し置換することで、多彩な表現が可能になります。詳しくはプラグインの説明をご覧ください。</span></span><br>
+                            <textarea id="replaceRegex" name="replaceRegex"></textarea></label>
                         <div id="replaceRegexErr" style="display:none;"></div><br>
-                        <label>CSS <span class="tooltip">(?)<span class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span><br>
-                        <textarea id="customCss" name="customCss"></textarea></label><br>
+                        <label>CSS <span class="tooltip">(?)<span
+                                    class="tooltiptext">カスタムCSSです。詳しくはプラグインの説明をご覧ください。</span></span><br>
+                            <textarea id="customCss" name="customCss"></textarea></label><br>
                         <div id="customCssErr" style="display:none;"></div>
-                        <label><input type="checkbox" id="addMenu" name="addMenu" checked="checked">自動作成目次を追加</label><span
-                            class="tooltip">(?)<span
+                        <label><input type="checkbox" id="addMenu" name="addMenu"
+                                checked="checked">自動作成目次を追加</label><span class="tooltip">(?)<span
                                 class="tooltiptext righttop">正規表現でh1-h6タグを追加すると、それらのタグへのリンクを自動的に作成し、ページの先頭に「自動作成目次」として追加します。詳しくはプラグインの説明をご覧ください。</span></span>
                         <div class="select-city">
                             <select id="cityRegexSelect">
                                 <option value="tokyo-kodaira-shi">東京都 小平市</option>
                             </select><input data-role="loadCityRegex" type="button" value="の設定をロード" />
                         </div>
+                    </div>
+                </div>
+                <div class="tab">
+                    <input type="radio" name="tabs" id="tab4" class="tabSwitch" />
+                    <label for="tab4" role="tab" aria-selected="false" aria-controls="tabContent4" tabindex="3"
+                        class="tabLabel">Help</label>
+                    <div id="tabContent4" class="tabContent" role="tabpanel" aria-labelledby="Help"
+                        aria-hidden="true">
+                        <dl>
+                            <dt>使い方<dt>
+                                <dd>
+                                    <ol>
+                                        <li>会議録サイトのスマホ用画面を表示します。例えば小平市は<a href="https://ssp.kaigiroku.net/tenant/kodaira/SpTop.html">こちら</a>。</li>
+                                        <li>必要に応じて、フォント設定、正規表現（とCSS）設定をそれぞれのタブで行います。</li>
+                                        <li>ダウンロードタブを開きます。</li>
+                                        <li>ダウンロードしたい会議を選択します。個別の会議録が開かれている場合、会議の選択は不要です。</li>
+                                        <li>「印刷画面を開く（PDF保存）」もしくは「ファイルに保存（HTML/TXT）」を選択します。</li>
+                                        <li>ファイル名は通常自動作成されます。任意のファイル名にしたい場合は、ファイル名欄に記入します。</li>
+                                        <li>『Downloadボタン』を押すと、ファイルがダウンロードされます。</li>
+                                        <li>ダウンロードされたファイルは、ダウンロードフォルダに保存されています。</li>
+                                    </ol>
+                                </dd>
+                            </dt>
+                            <dt>その他</dt>
+                            <dd>詳しくはこちらをご参照ください。<br><a href="https://github.com/yasutakeyohei/Discuss2File/" target="_blank">https://github.com/yasutakeyohei/Discuss2File/</a></dd>
+                        </dl>
+                    </div>
                 </div>
             </div>
         </div>
