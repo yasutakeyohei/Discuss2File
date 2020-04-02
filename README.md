@@ -17,16 +17,30 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 
 ![Optional Text](./images/readme/download.png)
 
-## Requirement
+## 要件
 
 現在この拡張機能は Google Chrome ブラウザのみで動作確認しています。
 
-## Usage
+## 使い方
 
-<a href="https://chrome.google.com/webstore/category/extensions?hl=ja">chromeウェブストア</a> にアクセスし「Discuss2File」で検索。インストールを行ってください。
+1. <a href="https://chrome.google.com/webstore/category/extensions?hl=ja">chromeウェブストア</a> にアクセスし「Discuss2File」で検索。インストールを行ってください。
+1. Discuss 会議録サイトにアクセスします。PC版ではなく、以下のリストに掲載したレスポンシブ対応のサイトにアクセスしてください。
+1. 必要に応じて、フォント設定、正規表現（とCSS）設定をそれぞれのタブで行います。
+1. ダウンロードタブを開きます。
+1. ダウンロードしたい会議を選択します。個別の会議録が開かれている場合、会議の選択は不要です。
+1. 「印刷画面を開く（PDF保存）」もしくは「ファイルに保存（HTML/TXT）」を選択します。
+1. ファイル名は通常自動作成されます。任意のファイル名にしたい場合は、ファイル名欄に記入します。
+1. 『Downloadボタン』を押すと、ファイルがダウンロードされます。
+1. ダウンロードされたファイルは、ダウンロードフォルダに保存されています。
 
-
-<table><tr><th>北海道</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/hakodate/SpTop.html'>函館市</a>
+<style>
+th {
+    white-space: nowrap;
+}
+</style>
+<details>
+<summary>各自治体の会議録サイト一覧（ここをクリック）</summary>
+<table><tr><th>北海道</th><td><a href='https://ssp.kaigiroku.net/tenant/hakodate/SpTop.html'>函館市</a>
 <a href='https://ssp.kaigiroku.net/tenant/asahikawa/SpTop.html'>旭川市</a>
 <a href='https://ssp.kaigiroku.net/tenant/muroran/SpTop.html'>室蘭市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kushiro/SpTop.html'>釧路市</a>
@@ -48,8 +62,8 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/atsuma/SpTop.html'>厚真町</a>
 <a href='https://ssp.kaigiroku.net/tenant/hidakahokkaido/SpTop.html'>日高町</a>
 <a href='https://ssp.kaigiroku.net/tenant/memuro/SpTop.html'>芽室町</a>
-</td></tr><tr><th>青森県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/towada/SpTop.html'>十和田市</a>
-</td></tr><tr><th>岩手県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/morioka/SpTop.html'>盛岡市</a>
+</td></tr><tr><th>青森県</th><td><a href='https://ssp.kaigiroku.net/tenant/towada/SpTop.html'>十和田市</a>
+</td></tr><tr><th>岩手県</th><td><a href='https://ssp.kaigiroku.net/tenant/morioka/SpTop.html'>盛岡市</a>
 <a href='https://ssp.kaigiroku.net/tenant/miyako/SpTop.html'>宮古市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ofunato/SpTop.html'>大船渡市</a>
 <a href='https://ssp.kaigiroku.net/tenant/hanamaki/SpTop.html'>花巻市</a>
@@ -63,24 +77,24 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/shizukuishi/SpTop.html'>雫石町</a>
 <a href='https://ssp.kaigiroku.net/tenant/shiwa/SpTop.html'>紫波町</a>
 <a href='https://ssp.kaigiroku.net/tenant/kanegasaki/SpTop.html'>金ケ崎町</a>
-</td></tr><tr><th>宮城県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefmiyagi/SpTop.html'>宮城県庁</a>
+</td></tr><tr><th>宮城県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefmiyagi/SpTop.html'>宮城県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/ishinomaki/SpTop.html'>石巻市</a>
 <a href='https://ssp.kaigiroku.net/tenant/higashimatsushima/SpTop.html'>東松島市</a>
 <a href='https://ssp.kaigiroku.net/tenant/oosaki/SpTop.html'>大崎市</a>
-</td></tr><tr><th>秋田県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefakita/SpTop.html'>秋田県庁</a>
+</td></tr><tr><th>秋田県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefakita/SpTop.html'>秋田県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/noshiro/SpTop.html'>能代市</a>
 <a href='https://ssp.kaigiroku.net/tenant/oga/SpTop.html'>男鹿市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yuzawa/SpTop.html'>湯沢市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yurihonjo/SpTop.html'>由利本荘市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kitaakita/SpTop.html'>北秋田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/semboku/SpTop.html'>仙北市</a>
-</td></tr><tr><th>山形県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefyamagata/SpTop.html'>山形県庁</a>
+</td></tr><tr><th>山形県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefyamagata/SpTop.html'>山形県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/tsuruoka/SpTop.html'>鶴岡市</a>
 <a href='https://ssp.kaigiroku.net/tenant/sakata/SpTop.html'>酒田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/murayama/SpTop.html'>村山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tendo/SpTop.html'>天童市</a>
 <a href='https://ssp.kaigiroku.net/tenant/shounai/SpTop.html'>庄内町</a>
-</td></tr><tr><th>福島県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/fukushima/SpTop.html'>福島県庁</a>
+</td></tr><tr><th>福島県</th><td><a href='https://ssp.kaigiroku.net/tenant/fukushima/SpTop.html'>福島県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/aizuwakamatsu/SpTop.html'>会津若松市</a>
 <a href='https://ssp.kaigiroku.net/tenant/koriyama/SpTop.html'>郡山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/iwaki/SpTop.html'>いわき市</a>
@@ -98,7 +112,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/hanawa/SpTop.html'>塙町</a>
 <a href='https://ssp.kaigiroku.net/tenant/hirata/SpTop.html'>平田村</a>
 <a href='https://ssp.kaigiroku.net/tenant/kawauchi/SpTop.html'>川内村</a>
-</td></tr><tr><th>茨城県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/mito/SpTop.html'>水戸市</a>
+</td></tr><tr><th>茨城県</th><td><a href='https://ssp.kaigiroku.net/tenant/mito/SpTop.html'>水戸市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tsuchiura/SpTop.html'>土浦市</a>
 <a href='https://ssp.kaigiroku.net/tenant/koga/SpTop.html'>古河市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yuki/SpTop.html'>結城市</a>
@@ -137,14 +151,14 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/shioya/SpTop.html'>塩谷町</a>
 <a href='https://ssp.kaigiroku.net/tenant/takanezawa/SpTop.html'>高根沢町</a>
 <a href='https://ssp.kaigiroku.net/tenant/nasu/SpTop.html'>那須町</a>
-</td></tr><tr><th>群馬県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/kiryu/SpTop.html'>桐生市</a>
+</td></tr><tr><th>群馬県</th><td><a href='https://ssp.kaigiroku.net/tenant/kiryu/SpTop.html'>桐生市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tatebayashi/SpTop.html'>館林市</a>
 <a href='https://ssp.kaigiroku.net/tenant/shibukawa/SpTop.html'>渋川市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tomioka/SpTop.html'>富岡市</a>
 <a href='https://ssp.kaigiroku.net/tenant/annaka/SpTop.html'>安中市</a>
 <a href='https://ssp.kaigiroku.net/tenant/midori/SpTop.html'>みどり市</a>
 <a href='https://ssp.kaigiroku.net/tenant/oizumi/SpTop.html'>大泉町</a>
-</td></tr><tr><th>埼玉県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefsaitama/SpTop.html'>埼玉県庁</a>
+</td></tr><tr><th>埼玉県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefsaitama/SpTop.html'>埼玉県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/saitama/SpTop.html'>さいたま市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kumagaya/SpTop.html'>熊谷市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kawaguchi/SpTop.html'>川口市</a>
@@ -191,7 +205,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/yorii/SpTop.html'>寄居町</a>
 <a href='https://ssp.kaigiroku.net/tenant/miyashiro/SpTop.html'>宮代町</a>
 <a href='https://ssp.kaigiroku.net/tenant/sugito/SpTop.html'>杉戸町</a>
-</td></tr><tr><th>千葉県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/choshi/SpTop.html'>銚子市</a>
+</td></tr><tr><th>千葉県</th><td><a href='https://ssp.kaigiroku.net/tenant/choshi/SpTop.html'>銚子市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tateyama/SpTop.html'>館山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/matsudo/SpTop.html'>松戸市</a>
 <a href='https://ssp.kaigiroku.net/tenant/noda/SpTop.html'>野田市</a>
@@ -217,7 +231,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/shisui/SpTop.html'>酒々井町</a>
 <a href='https://ssp.kaigiroku.net/tenant/kujukuri/SpTop.html'>九十九里町</a>
 <a href='https://ssp.kaigiroku.net/tenant/shibayama/SpTop.html'>芝山町</a>
-</td></tr><tr><th>東京都</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/shinjuku/SpTop.html'>新宿区</a>
+</td></tr><tr><th>東京都</th><td><a href='https://ssp.kaigiroku.net/tenant/shinjuku/SpTop.html'>新宿区</a>
 <a href='https://ssp.kaigiroku.net/tenant/sumida/SpTop.html'>墨田区</a>
 <a href='https://ssp.kaigiroku.net/tenant/shibuya/SpTop.html'>渋谷区</a>
 <a href='https://ssp.kaigiroku.net/tenant/kita/SpTop.html'>北区</a>
@@ -231,7 +245,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/musashimurayama/SpTop.html'>武蔵村山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/mizuho/SpTop.html'>瑞穂町</a>
 <a href='https://ssp.kaigiroku.net/tenant/ogasawara/SpTop.html'>小笠原村</a>
-</td></tr><tr><th>神奈川県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefkanagawa/SpTop.html'>神奈川県庁</a>
+</td></tr><tr><th>神奈川県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefkanagawa/SpTop.html'>神奈川県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/yokohama/SpTop.html'>横浜市</a>
 <a href='https://ssp.kaigiroku.net/tenant/sagamihara/SpTop.html'>相模原市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yokosuka/SpTop.html'>横須賀市</a>
@@ -239,7 +253,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/zushi/SpTop.html'>逗子市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ayase/SpTop.html'>綾瀬市</a>
 <a href='https://ssp.kaigiroku.net/tenant/aikawa/SpTop.html'>愛川町</a>
-</td></tr><tr><th>新潟県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefniigata/SpTop.html'>新潟県庁</a>
+</td></tr><tr><th>新潟県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefniigata/SpTop.html'>新潟県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/ojiya/SpTop.html'>小千谷市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tokamachi/SpTop.html'>十日町市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tokamachi/SpTop.html'>見附市</a>
@@ -252,18 +266,18 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/oyabe/SpTop.html'>小矢部市</a>
 <a href='https://ssp.kaigiroku.net/tenant/nanto/SpTop.html'>南砺市</a>
 <a href='https://ssp.kaigiroku.net/tenant/imizu/SpTop.html'>射水市</a>
-</td></tr><tr><th>石川県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/kanazawa/SpTop.html'>金沢市</a>
+</td></tr><tr><th>石川県</th><td><a href='https://ssp.kaigiroku.net/tenant/kanazawa/SpTop.html'>金沢市</a>
 <a href='https://ssp.kaigiroku.net/tenant/nanao/SpTop.html'>七尾市</a>
 <a href='https://ssp.kaigiroku.net/tenant/wajima/SpTop.html'>輪島市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kaga/SpTop.html'>加賀市</a>
 <a href='https://ssp.kaigiroku.net/tenant/hakusan/SpTop.html'>白山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/nonoichi/SpTop.html'>野々市市</a>
-</td></tr><tr><th>福井県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/fukui/SpTop.html'>福井市</a>
+</td></tr><tr><th>福井県</th><td><a href='https://ssp.kaigiroku.net/tenant/fukui/SpTop.html'>福井市</a>
 <a href='https://ssp.kaigiroku.net/tenant/obama/SpTop.html'>小浜市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ono/SpTop.html'>大野市</a>
 <a href='https://ssp.kaigiroku.net/tenant/echizen/SpTop.html'>越前市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ohi/SpTop.html'>おおい町</a>
-</td></tr><tr><th>山梨県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/fujiyoshida/SpTop.html'>富士吉田市</a>
+</td></tr><tr><th>山梨県</th><td><a href='https://ssp.kaigiroku.net/tenant/fujiyoshida/SpTop.html'>富士吉田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tsuru/SpTop.html'>都留市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yamanashi/SpTop.html'>山梨市</a>
 <a href='https://ssp.kaigiroku.net/tenant/otsuki/SpTop.html'>大月市</a>
@@ -275,7 +289,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/ichikawamisato/SpTop.html'>市川三郷町</a>
 <a href='https://ssp.kaigiroku.net/tenant/showa/SpTop.html'>昭和町</a>
 <a href='https://ssp.kaigiroku.net/tenant/fujikawaguchiko/SpTop.html'>富士河口湖町</a>
-</td></tr><tr><th>長野県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/nagano/SpTop.html'>長野市</a>
+</td></tr><tr><th>長野県</th><td><a href='https://ssp.kaigiroku.net/tenant/nagano/SpTop.html'>長野市</a>
 <a href='https://ssp.kaigiroku.net/tenant/matsumoto/SpTop.html'>松本市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ueda/SpTop.html'>上田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/okaya/SpTop.html'>岡谷市</a>
@@ -296,7 +310,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/sakuho/SpTop.html'>佐久穂町</a>
 <a href='https://ssp.kaigiroku.net/tenant/karuizawa/SpTop.html'>軽井沢町</a>
 <a href='https://ssp.kaigiroku.net/tenant/minowa/SpTop.html'>箕輪町</a>
-</td></tr><tr><th>岐阜県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefgifu/SpTop.html'>岐阜県庁</a>
+</td></tr><tr><th>岐阜県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefgifu/SpTop.html'>岐阜県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/takayama/SpTop.html'>高山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tajimi/SpTop.html'>多治見市</a>
 <a href='https://ssp.kaigiroku.net/tenant/seki/SpTop.html'>関市</a>
@@ -314,7 +328,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/kikugawa/SpTop.html'>菊川市</a>
 <a href='https://ssp.kaigiroku.net/tenant/izunokuni/SpTop.html'>伊豆の国市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kannami/SpTop.html'>函南町</a>
-</td></tr><tr><th>愛知県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/nagoya/SpTop.html'>名古屋市</a>
+</td></tr><tr><th>愛知県</th><td><a href='https://ssp.kaigiroku.net/tenant/nagoya/SpTop.html'>名古屋市</a>
 <a href='https://ssp.kaigiroku.net/tenant/toyohashi/SpTop.html'>豊橋市</a>
 <a href='https://ssp.kaigiroku.net/tenant/okazaki/SpTop.html'>岡崎市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ichinomiya/SpTop.html'>一宮市</a>
@@ -337,14 +351,14 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/agui/SpTop.html'>阿久比町</a>
 <a href='https://ssp.kaigiroku.net/tenant/higashiura/SpTop.html'>東浦町</a>
 <a href='https://ssp.kaigiroku.net/tenant/taketoyo/SpTop.html'>武豊町</a>
-</td></tr><tr><th>三重県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefmie/SpTop.html'>三重県庁</a>
+</td></tr><tr><th>三重県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefmie/SpTop.html'>三重県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/tsu/SpTop.html'>津市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ise/SpTop.html'>伊勢市</a>
 <a href='https://ssp.kaigiroku.net/tenant/matsusaka/SpTop.html'>松阪市</a>
 <a href='https://ssp.kaigiroku.net/tenant/nabari/SpTop.html'>名張市</a>
 <a href='https://ssp.kaigiroku.net/tenant/toba/SpTop.html'>鳥羽市</a>
 <a href='https://ssp.kaigiroku.net/tenant/odai/SpTop.html'>大台町</a>
-</td></tr><tr><th>滋賀県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/nagahama/SpTop.html'>長浜市</a>
+</td></tr><tr><th>滋賀県</th><td><a href='https://ssp.kaigiroku.net/tenant/nagahama/SpTop.html'>長浜市</a>
 <a href='https://ssp.kaigiroku.net/tenant/omihachiman/SpTop.html'>近江八幡市</a>
 <a href='https://ssp.kaigiroku.net/tenant/koka/SpTop.html'>甲賀市</a>
 <a href='https://ssp.kaigiroku.net/tenant/konan/SpTop.html'>湖南市</a>
@@ -354,7 +368,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/kameoka/SpTop.html'>亀岡市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kyotanabe/SpTop.html'>京田辺市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yosano/SpTop.html'>与謝野町</a>
-</td></tr><tr><th>大阪府</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefosaka/SpTop.html'>大阪府庁</a>
+</td></tr><tr><th>大阪府</th><td><a href='https://ssp.kaigiroku.net/tenant/prefosaka/SpTop.html'>大阪府庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/cityosaka/SpTop.html'>大阪市</a>
 <a href='https://ssp.kaigiroku.net/tenant/suita/SpTop.html'>吹田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/izumiotsu/SpTop.html'>泉大津市</a>
@@ -382,7 +396,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/kasai/SpTop.html'>加西市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kato/SpTop.html'>加東市</a>
 <a href='https://ssp.kaigiroku.net/tenant/taka/SpTop.html'>多可町</a>
-</td></tr><tr><th>奈良県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefnara/SpTop.html'>奈良県庁</a>
+</td></tr><tr><th>奈良県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefnara/SpTop.html'>奈良県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/narashi/SpTop.html'>奈良市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yamatokoriyama/SpTop.html'>大和郡山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tenri/SpTop.html'>天理市</a>
@@ -390,18 +404,18 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/gose/SpTop.html'>御所市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kashiba/SpTop.html'>香芝市</a>
 <a href='https://ssp.kaigiroku.net/tenant/oji/SpTop.html'>王寺町</a>
-</td></tr><tr><th>和歌山県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/wakayama/SpTop.html'>和歌山市</a>
+</td></tr><tr><th>和歌山県</th><td><a href='https://ssp.kaigiroku.net/tenant/wakayama/SpTop.html'>和歌山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kainan/SpTop.html'>海南市</a>
 <a href='https://ssp.kaigiroku.net/tenant/gobo/SpTop.html'>御坊市</a>
 <a href='https://ssp.kaigiroku.net/tenant/shingu/SpTop.html'>新宮市</a>
 <a href='https://ssp.kaigiroku.net/tenant/inami/SpTop.html'>印南町</a>
-</td></tr><tr><th>鳥取県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/iwami/SpTop.html'>岩美町</a>
-</td></tr><tr><th>島根県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/matsue/SpTop.html'>松江市</a>
+</td></tr><tr><th>鳥取県</th><td><a href='https://ssp.kaigiroku.net/tenant/iwami/SpTop.html'>岩美町</a>
+</td></tr><tr><th>島根県</th><td><a href='https://ssp.kaigiroku.net/tenant/matsue/SpTop.html'>松江市</a>
 <a href='https://ssp.kaigiroku.net/tenant/hamada/SpTop.html'>浜田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/masuda/SpTop.html'>益田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yasugi/SpTop.html'>安来市</a>
 <a href='https://ssp.kaigiroku.net/tenant/gotsu/SpTop.html'>江津市</a>
-</td></tr><tr><th>岡山県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefokayama/SpTop.html'>岡山県庁</a>
+</td></tr><tr><th>岡山県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefokayama/SpTop.html'>岡山県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/okayama/SpTop.html'>岡山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kurashiki/SpTop.html'>倉敷市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tsuyama/SpTop.html'>津山市</a>
@@ -426,7 +440,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/shobara/SpTop.html'>庄原市</a>
 <a href='https://ssp.kaigiroku.net/tenant/higashihiroshima/SpTop.html'>東広島市</a>
 <a href='https://ssp.kaigiroku.net/tenant/jinsekikougen/SpTop.html'>神石高原町</a>
-</td></tr><tr><th>山口県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefyamaguchi/SpTop.html'>山口県庁</a>
+</td></tr><tr><th>山口県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefyamaguchi/SpTop.html'>山口県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/shimonoseki/SpTop.html'>下関市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ube/SpTop.html'>宇部市</a>
 <a href='https://ssp.kaigiroku.net/tenant/hagi/SpTop.html'>萩市</a>
@@ -437,7 +451,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/yanai/SpTop.html'>柳井市</a>
 <a href='https://ssp.kaigiroku.net/tenant/shunan/SpTop.html'>周南市</a>
 <a href='https://ssp.kaigiroku.net/tenant/sanyoonoda/SpTop.html'>山陽小野田市</a>
-</td></tr><tr><th>徳島県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/tokushimapref/SpTop.html'>徳島県庁</a>
+</td></tr><tr><th>徳島県</th><td><a href='https://ssp.kaigiroku.net/tenant/tokushimapref/SpTop.html'>徳島県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/naruto/SpTop.html'>鳴門市</a>
 <a href='https://ssp.kaigiroku.net/tenant/anan/SpTop.html'>阿南市</a>
 <a href='https://ssp.kaigiroku.net/tenant/naruto/SpTop.html'>三好市</a>
@@ -448,18 +462,18 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/sakaide/SpTop.html'>坂出市</a>
 <a href='https://ssp.kaigiroku.net/tenant/zentsuji/SpTop.html'>善通寺市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kanonji/SpTop.html'>観音寺市</a>
-</td></tr><tr><th>愛媛県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/matsuyama/SpTop.html'>松山市</a>
+</td></tr><tr><th>愛媛県</th><td><a href='https://ssp.kaigiroku.net/tenant/matsuyama/SpTop.html'>松山市</a>
 <a href='https://ssp.kaigiroku.net/tenant/uwajima/SpTop.html'>宇和島市</a>
 <a href='https://ssp.kaigiroku.net/tenant/saijo/SpTop.html'>西条市</a>
 <a href='https://ssp.kaigiroku.net/tenant/iyo/SpTop.html'>伊予市</a>
 <a href='https://ssp.kaigiroku.net/tenant/shikokuchuo/SpTop.html'>四国中央市</a>
 <a href='https://ssp.kaigiroku.net/tenant/toon/SpTop.html'>東温市</a>
-</td></tr><tr><th>高知県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefkochi/SpTop.html'>高知県庁</a>
+</td></tr><tr><th>高知県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefkochi/SpTop.html'>高知県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/kochi/SpTop.html'>高知市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tosa/SpTop.html'>土佐市</a>
 <a href='https://ssp.kaigiroku.net/tenant/shimanto/SpTop.html'>四万十市</a>
 <a href='https://ssp.kaigiroku.net/tenant/ino/SpTop.html'>いの町</a>
-</td></tr><tr><th>福岡県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/kitakyushu/SpTop.html'>北九州市</a>
+</td></tr><tr><th>福岡県</th><td><a href='https://ssp.kaigiroku.net/tenant/kitakyushu/SpTop.html'>北九州市</a>
 <a href='https://ssp.kaigiroku.net/tenant/omuta/SpTop.html'>大牟田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/chikugo/SpTop.html'>筑後市</a>
 <a href='https://ssp.kaigiroku.net/tenant/yukuhashi/SpTop.html'>行橋市</a>
@@ -470,11 +484,11 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/okagaki/SpTop.html'>岡垣町</a>
 <a href='https://ssp.kaigiroku.net/tenant/kanda/SpTop.html'>苅田町</a>
 <a href='https://ssp.kaigiroku.net/tenant/miyako/SpTop.html'>みやこ町</a>
-</td></tr><tr><th>佐賀県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/karatsu/SpTop.html'>唐津市</a>
+</td></tr><tr><th>佐賀県</th><td><a href='https://ssp.kaigiroku.net/tenant/karatsu/SpTop.html'>唐津市</a>
 <a href='https://ssp.kaigiroku.net/tenant/tosu/SpTop.html'>鳥栖市</a>
 <a href='https://ssp.kaigiroku.net/tenant/taku/SpTop.html'>多久市</a>
 <a href='https://ssp.kaigiroku.net/tenant/imari/SpTop.html'>伊万里市</a>
-</td></tr><tr><th>長崎県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefnagasaki/SpTop.html'>長崎県庁</a>
+</td></tr><tr><th>長崎県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefnagasaki/SpTop.html'>長崎県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/sasebo/SpTop.html'>佐世保市</a>
 <a href='https://ssp.kaigiroku.net/tenant/omura/SpTop.html'>大村市</a>
 <a href='https://ssp.kaigiroku.net/tenant/hirado/SpTop.html'>平戸市</a>
@@ -483,12 +497,12 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/saikai/SpTop.html'>西海市</a>
 <a href='https://ssp.kaigiroku.net/tenant/unzen/SpTop.html'>雲仙市</a>
 <a href='https://ssp.kaigiroku.net/tenant/minamishimabara/SpTop.html'>南島原市</a>
-</td></tr><tr><th>熊本県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefkumamoto/SpTop.html'>熊本県庁</a>
+</td></tr><tr><th>熊本県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefkumamoto/SpTop.html'>熊本県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/uto/SpTop.html'>宇土市</a>
 <a href='https://ssp.kaigiroku.net/tenant/uki/SpTop.html'>宇城市</a>
 <a href='https://ssp.kaigiroku.net/tenant/amakusa/SpTop.html'>天草市</a>
 <a href='https://ssp.kaigiroku.net/tenant/koshi/SpTop.html'>合志市</a>
-</td></tr><tr><th>大分県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/prefoita/SpTop.html'>大分県庁</a>
+</td></tr><tr><th>大分県</th><td><a href='https://ssp.kaigiroku.net/tenant/prefoita/SpTop.html'>大分県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/nakatsu/SpTop.html'>中津市</a>
 <a href='https://ssp.kaigiroku.net/tenant/hita/SpTop.html'>日田市</a>
 <a href='https://ssp.kaigiroku.net/tenant/usuki/SpTop.html'>臼杵市</a>
@@ -498,14 +512,14 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/bungoohno/SpTop.html'>豊後大野市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kunisaki/SpTop.html'>国東市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kokonoe/SpTop.html'>九重町</a>
-</td></tr><tr><th>宮崎県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/miyazakipref/SpTop.html'>宮崎県庁</a>
+</td></tr><tr><th>宮崎県</th><td><a href='https://ssp.kaigiroku.net/tenant/miyazakipref/SpTop.html'>宮崎県庁</a>
 <a href='https://ssp.kaigiroku.net/tenant/kobayashi/SpTop.html'>小林市</a>
 <a href='https://ssp.kaigiroku.net/tenant/hyuga/SpTop.html'>日向市</a>
 <a href='https://ssp.kaigiroku.net/tenant/saito/SpTop.html'>西都市</a>
 <a href='https://ssp.kaigiroku.net/tenant/aya/SpTop.html'>綾町</a>
 <a href='https://ssp.kaigiroku.net/tenant/shintomi/SpTop.html'>新富町</a>
 <a href='https://ssp.kaigiroku.net/tenant/kadogawa/SpTop.html'>門川町</a>
-</td></tr><tr><th>鹿児島県</th></tr><tr><td><a href='https://ssp.kaigiroku.net/tenant/kagoshima/SpTop.html'>鹿児島市</a>
+</td></tr><tr><th>鹿児島県</th><td><a href='https://ssp.kaigiroku.net/tenant/kagoshima/SpTop.html'>鹿児島市</a>
 <a href='https://ssp.kaigiroku.net/tenant/kanoya/SpTop.html'>鹿屋市</a>
 <a href='https://ssp.kaigiroku.net/tenant/satsumasendai/SpTop.html'>薩摩川内市</a>
 <a href='https://ssp.kaigiroku.net/tenant/minamikyushu/SpTop.html'>南九州市</a>
@@ -532,7 +546,7 @@ Discuss2Fileは『議会情報公開サービスDiscussシリーズ』（NTTア�
 <a href='https://ssp.kaigiroku.net/tenant/yaese/SpTop.html'>八重瀬町</a>
 <a href='https://ssp.kaigiroku.net/tenant/taketomi/SpTop.html'>竹富町</a>
 </td></tr></table>
-
+</details>
 
 ## Install
 
