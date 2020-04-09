@@ -30,10 +30,10 @@ const cssWhitelist = [
     'border-top-color', 'border-right-color', 'border-bottom-color', 'border-left-color',
     'border-top-width', 'border-right-width', 'border-bottom-width', 'border-left-width',
     'border-top-style', 'border-right-style', 'border-bottom-style', 'border-left-style',
-    'border-collapse',
+    'border-collapse', 'box-shadow',
     'color',
     'display',
-    'font-size', 'font-weight', 'font-family',
+    'font-size', 'font-weight', 'font-family', 'filter',
     'list-style', 'list-style-position', 'list-style-image', 'list-style-type',
     'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left',
     'max-width',
@@ -65,19 +65,23 @@ export const sanitizeHtml = (input) => {
             newNode = iframedoc.createElement(node.tagName);
 
             if(node.tagName === "STYLE") {
+                console.groupCollapsed("スタイル関連:");
                 let cssString = "";
                 for (const cssRule of node.sheet.cssRules) {
                     cssString += cssRule.selectorText + " {";
                     for (const styleName of cssRule.style) {
-                        console.log(styleName);
                         if(cssWhitelist.indexOf(styleName) > -1) {
                             cssString += styleName + ":" + cssRule.style.getPropertyValue(styleName) + ";";
                             // bugがある？ので以下の方法は使えない。sheetがundefinedになる。
                             // newNode.sheet.insertRule(cssRule.selectorText + "{" + styleName + ":" + cssRule.style.getPropertyValue(styleName) + ";}") 
+                            console.log("〇:" + styleName);
+                        } else {
+                            console.log("ｘ:" + styleName);
                         }
                     }
                     cssString += "}\n";
                 }
+                console.groupEnd();
                 //console.log(cssString);
                 newNode.innerHTML = cssString;
             } else {
@@ -88,6 +92,9 @@ export const sanitizeHtml = (input) => {
                             for (const styleName of node.style) {
                                 if(cssWhitelist.indexOf(styleName) > -1) {
                                     newNode.style.setProperty(styleName, node.style.getPropertyValue(styleName));
+                                    console.log("〇：" + styleName);
+                                } else {
+                                    console.log("ｘ:" + styleName);
                                 }
                             }
                         } else {
@@ -95,6 +102,9 @@ export const sanitizeHtml = (input) => {
                                 const schema = attr.value.match(/^(.*\:)/)[1];
                                 if(schema.length > 0 && schemaWhiteList.indexOf(schema) > -1) {
                                     newNode.setAttribute(attr.name, attr.value);
+                                    console.log("〇：" + attr.name);
+                                } else {
+                                    console.log("ｘ:" + attr.name);
                                 }
                             } else {
                                 newNode.setAttribute(attr.name, attr.value);
@@ -109,11 +119,16 @@ export const sanitizeHtml = (input) => {
                 }
             }
         } else {
+            if(node.nodeType == Node.ELEMENT_NODE) {
+                console.log("ｘ:" + node.tagName);
+            }
             newNode = document.createDocumentFragment();
         }
         return newNode;
     };
+    console.groupCollapsed("HTML/CSSサニタイズ");
     let resultElement = makeSanitizedCopy(iframedoc.body);
+    console.groupEnd();
     document.body.removeChild(iframe);
     return resultElement.innerHTML
 }
