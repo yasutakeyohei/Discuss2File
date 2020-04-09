@@ -26,11 +26,13 @@ table th {
   text-align: left;
 }
 div.date {
-  border-bottom: 1px solid #195b94;
+  border: 1px solid #195b94;
+  box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 3px;
   color: #195b94;
   font-weight: bold;
   margin-bottom: 10px;
   margin-top: 15px;
+  padding: 3px 0 2px 2px;
 }
 h2.date {
   background-color: #195b94;
