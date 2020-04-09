@@ -247,6 +247,7 @@ const downloadSingleMinutePDF = async (parsedContent) => {
 }
 
 const downloadSingleMinuteHTML = async (parsedContent) => {
+  const debugMode = $("#debugMode").is(":checked");
   $("#replaceRegexErr").hide();
   const filename = $("#filename").val();
 
@@ -270,17 +271,16 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
     }
 
     //置換文字列の""もしくは''で括られた部分を抽出後、正規表現の抽出
-    let replace = ""; //置換文字列
+    let replacer = ""; //置換文字列
     // https://stackoverflow.com/questions/6525556/regular-expression-to-match-escaped-characters-quotes
     regex = regex.replace(/(?<!\\)(?:\\{2})*"(?:(?<!\\)(?:\\{2})*\\"|[^"])*(?<!\\)(?:\\{2})*"/, (match) => {
-      // console.log("ma" + match);
-      replace = match;
+      replacer = match;
       return "";
     });
 
-    if(replace.length >= 2) { //""の分が二文字
+    if(replacer.length >= 2) { //""の分が二文字
       // ダブルクオーテーションを削除
-      replace = replace.slice(1).slice(0, -1);
+      replacer = replacer.slice(1).slice(0, -1);
       //最後のカンマを削除
       regex = regex.replace(/^(.*),[^,]*$/g, "$1");
       let flag = "";
@@ -289,14 +289,31 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
         return p1;
       });
 
-      replace = replace.replace(/\\"/g, '"');
-      replace = replace.replace(/\{baseUrl\}/g, baseUrl);
+      replacer = replacer.replace(/\\"/g, '"');
+      replacer = replacer.replace(/\{baseUrl\}/g, baseUrl);
 
       const r = new RegExp(regex, flag);
-      parsedContent = parsedContent.replace(r, replace);
-      console.log(r, parsedContent);
+      if(debugMode) {
+        const matched = parsedContent.match(r);
+        if(matched) {
+          console.groupCollapsed("マッチあり：" + r);
+          console.log("マッチ内容：", matched);
+          console.groupCollapsed("置換前");
+          console.log(parsedContent);
+          console.groupEnd();
+          parsedContent = parsedContent.replace(r, replacer);
+          console.groupCollapsed("置換後");
+          console.log(parsedContent);
+          console.groupEnd();
+          console.groupEnd();
+        } else {
+          console.log("マッチなし：正規表現" + r);
+        }
+      } else {
+        parsedContent = parsedContent.replace(r, replacer);
+      }
     } else {
-      err = { index: i + 1, message: "置換文字列が見つかりません" + replace.length };
+      err = { index: i + 1, message: "置換文字列が見つかりません" + replacer.length };
       break;
     }
 
@@ -418,7 +435,13 @@ const loadOptions = async () => {
       const obj = data.options.find(item => {
         return (item.type === elm.type && item.name === elm.name && item.value === elm.value);
       });
-      if(obj && obj.checked) $(elm).prop("checked", true);
+      if(obj) {
+        if(obj.checked) {
+          $(elm).prop("checked", true);
+        } else {
+          $(elm).prop("checked", false);
+        }
+      } 
     });
     $("textarea, [name=fontFamily], [name=fontSize], [name=lineHeight], [name=letterSpacing]").each((idx, elm) => {
       const obj = data.options.find(item => {
@@ -538,6 +561,12 @@ const main = async () => {
     if(urlInfo.pageMode === PAGE_MODE_SINGLE) awaitParseSingleMinute(MODE_SINGLE_MINUTE_PARSE);
   });
 
+  //regex tab
+  $("[name=addMenu], [name=debugMode]").change(() => {
+    saveOptions();
+  });
+
+
   //tab changed
   $("[name=tabs]").change(() => {
     if($("#tab3").is(":checked")){
@@ -567,6 +596,10 @@ const main = async () => {
     switch(urlInfo.pageMode) {
       case PAGE_MODE_TOP:
       case PAGE_MODE_YEARLY:
+        if($("#debugMode").is(":checked")) {
+          alert("正規表現設定タブで「デバッグモード」にチェックが入っているときは、一括ダウンロードは行えません。個別の会議録を開いた状態でダウンロードしてください。");
+          return;
+        }
         downloadFromSchedules();
         break;
       case PAGE_MODE_SINGLE:
