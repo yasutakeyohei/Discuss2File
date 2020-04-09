@@ -110,9 +110,12 @@
                             <textarea id="customCss" name="customCss"></textarea></label><br>
                         <div id="customCssErr" style="display:none;"></div>
                         <label><input type="checkbox" id="addMenu" name="addMenu"
-                                checked="checked">自動作成目次を追加</label><span class="tooltip">(?)<span
-                                class="tooltiptext righttop">正規表現でh1-h6タグを追加すると、それらのタグへのリンクを自動的に作成し、ページの先頭に「自動作成目次」として追加します。詳しくはプラグインの説明をご覧ください。</span></span>
-                        <div class="select-city">
+                                checked="checked">自動作成目次を追加</label> <span class="tooltip">(?)<span
+                                class="tooltiptext righttop">正規表現でh1-h6タグを追加すると、それらのタグへのリンクを自動的に作成し、ページの先頭に「自動作成目次」として追加します。詳しくはプラグインの説明をご覧ください。</span></span><br>
+                        <label><input type="checkbox" id="debugMode" name="debugMode">デバッグモード（ログを表示）</label><span class="tooltip">(?)<span
+                            class="tooltiptext righttop wide">正規表現とCSSの適用状況（デバッグログ）がコンソールに表示され、正規表現とCSSのチェックが行えます。デバッグログを見るには、ダウンロードタブから「Download」を押した後、このウィンドウ上でマウス右クリックから「検証」を選んでChrome開発者ツールを開き、[Console] ボタンをクリックしてください。</span></span>
+    
+                                <div class="select-city">
                             <select id="cityRegexSelect">
                                 <option value="tokyo-kodaira-shi">東京都 小平市</option>
                             </select><input data-role="loadCityRegex" type="button" value="の設定をロード" />
