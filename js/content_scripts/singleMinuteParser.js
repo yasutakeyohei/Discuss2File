@@ -3,7 +3,7 @@
 
 /*
   content = {
-    result: "singleParsed" / "councsParsed" / "schedulesParsed",
+    result: "singleParsed" / "councilsParsed" / "schedulesParsed",
     filename: string,
     parsedContent: string
   }
@@ -11,28 +11,16 @@
 var parse = () => {
   let content = {};
 
-  const additionalCRLF = config.txtCrlf === "crlf" ? "\n\r"
-                       : config.txtCrlf === "lf"  ? "\n" : "";
-
   const councilTitle = $('#council-title').text();
   if(councilTitle) {
     content.result = "singleParsed";
     content.filename = config.filename.removeSpaces ? councilTitle.replace(/\s+/g, "") : councilTitle;
 
-    if(config.fileType === "html") {
-      let html = "";
-      $('pre').each((idx, elm) => {
-        html += $(elm).html();
-      });
-      content.parsedContent = html;
-    } else {
-      let text = "";
-      $('pre').each((idx, elm) => {
-        text += $(elm).text();
-        text += additionalCRLF;
-      });
-      content.parsedContent = text;
-    }
+    let html = "";
+    $('pre').each((idx, elm) => {
+      html += $(elm).html();
+    });
+    content.parsedContent = html;
   }
   return content;
 };

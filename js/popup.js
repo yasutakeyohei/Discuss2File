@@ -54,8 +54,6 @@ const awaitParseSingleMinute = (mode) => {
   return new Promise(async (resolve) => {
     var config = {
       mode: mode,
-      fileType: $("input[name=fileType]:checked").val(),
-      txtCrlf: $("input[name=txtCrlf]:checked").val(),
       filename: {
         removeSpaces: $("#removeSpacesFromFilename").is(':checked')
       },
@@ -204,46 +202,6 @@ const awaitBrowserTabUpdate = (url) => {
     browser.tabs.onUpdated.addListener(listener);
     browser.tabs.update(null, {url: url, active: true});
   });
-}
-
-const downloadSingleMinuteTxt = (parsedContent) => {
-  const filename = $("#filename").val() + ".txt";
-  var elm = document.createElement('a');
-  elm.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(parsedContent));
-  elm.setAttribute('download', filename);
-  elm.style.display = 'none';
-  $("#downloadLink").append(elm);
-  elm.click();
-  $("#downloadLink").empty();
-}
-
-const downloadSingleMinutePDF = async (parsedContent) => {
-  /*
-  if(fontModule === null) {
-    $("#fontLoading").show();
-    fontModule = await import('./Koruri-20180915-normal.js');
-    $("#fontLoading").hide();
-  }
-
-  let doc = new jsPDF('p', 'pt', 'a4');
-  doc.addFileToVFS('Koruri.ttf', fontModule.KoruriFont);
-  doc.addFont('Koruri.ttf', 'koruri', 'normal')
-  doc.setFont('koruri');
-  */
-  //doc.text(parsedContent, 10, 10);
-  //  doc.save("test.pdf");
-  /*
-  doc.html(parsedContent, {
-    enableLinks: true,
-    html2canvas: {
-      scale: 1
-    },
-    callback: function (doc) {
-      doc.save("test.pdf");
-    }
- });
- */
-
 }
 
 const downloadSingleMinuteHTML = async (parsedContent) => {
@@ -561,7 +519,7 @@ const main = async () => {
     }
   });
 
-  $("[name=fileType], [name=txtCrlf], [name=htmlSave], [id=removeSpacesFromFilename], [id=hankakuNumber]").change(() => {
+  $("[name=htmlSave], [id=removeSpacesFromFilename], [id=hankakuNumber]").change(() => {
     hankakuNumber();
     saveOptions();
     if(urlInfo.pageMode === PAGE_MODE_SINGLE) awaitParseSingleMinute(MODE_SINGLE_MINUTE_PARSE);
@@ -609,11 +567,7 @@ const main = async () => {
         downloadFromSchedules();
         break;
       case PAGE_MODE_SINGLE:
-        if($("[type='radio'][name='fileType'][value='html']").is(":checked")){
-          downloadSingleMinuteHTML(content.parsedContent);
-        } else {
-          downloadSingleMinuteTxt(content.parsedContent);
-        }  
+        downloadSingleMinuteHTML(content.parsedContent);
       break;
       default:
     }
