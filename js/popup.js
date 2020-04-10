@@ -175,8 +175,8 @@ const downloadFromSchedules = async () => {
     if(loopCount++ != 0) {
       let waitMSec = 1000 + loopCount * 500;
       $("#loading > span").text(waitMSec/1000 + "秒待機（負荷軽減用）");
-//      await sleep(waitMSec);
-await sleep(1000);
+      //await sleep(waitMSec);
+await sleep(100);
     }
     let url = baseUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
     // executescript前にupdate（ページ遷移）がcompleteするのを待つ必要がある
@@ -258,6 +258,12 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
 
   let regexes = $("#replaceRegex").val().split(/\r?\n/g);
   //console.log(regexes);
+
+  if(debugMode) {
+    console.groupCollapsed("オリジナル文書データ");
+    console.log(parsedContent);
+    console.groupEnd();
+  }
 
   // regex parse
   let err = {};
