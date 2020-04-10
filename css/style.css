@@ -178,11 +178,6 @@ label:focus {
   transition: all 0.35s;
 }
 
-#loading {
-  position: absolute;
-  top: 0;
-  left: 5px;
-}
 #loading span {
   color: red;
   font-size:12px;
