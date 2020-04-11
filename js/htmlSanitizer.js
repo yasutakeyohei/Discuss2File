@@ -4,7 +4,7 @@ const tagWhitelist = [
     'CENTER', 'CODE',
     'DIV',
     'EM',
-    'FIELDSET', 'FONT',
+    'FIELDSET', 'FIGURE', 'FIGCAPTION', 'FONT',
     'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'HR',
     'I', 'IMG',
     'LABEL', 'LEGEND', 'LI',
