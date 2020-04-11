@@ -305,7 +305,12 @@ p.icon-wrapper {
   color: white;
   padding: 2px 0px 1px 5px;
   font-weight: bold;
+  display: flex;
 }
+.council-title div:first-child {
+  width:100%;
+}
+
 
 #check {
   padding: 1em;
