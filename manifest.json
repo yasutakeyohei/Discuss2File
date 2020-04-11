@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "地方議会会議録ダウンローダー（Discuss2File）",
-  "description": "多くの地方議会が利用している会議録検索システムDiscussの会議録文書をHTMLファイルもしくはPDFファイルでダウンロードします。PDFへの保存は Google Chrome の印刷機能を使用します。.",
+  "description": "会議録検索システムDiscussの会議録文書を、HTMLファイルもしくはPDFファイルでダウンロードします。",
   "version": "1.0.0",
   "icons": {
     "16": "images/icon/icon_16.png",
