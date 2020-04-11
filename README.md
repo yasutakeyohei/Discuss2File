@@ -45,9 +45,9 @@ Discuss2Fileは会議録検索システムDiscuss（NTTアドバンステクノ�
 
 * 本拡張機能を使用したことによる一切の損害について開発者は責任を負いません
 
-## Licence
+## License
 
-[MIT](/LICENCE)
+[MIT](/LICENSE)
 
 ## Author
 
