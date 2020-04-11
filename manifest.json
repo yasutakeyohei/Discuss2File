@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Discuss 2 File",
-  "description": "This extension downloads Discuss minutes.",
+  "name": "地方議会会議録ダウンローダー（Discuss2File）",
+  "description": "多くの地方議会が利用している会議録検索システムDiscussの会議録文書をHTMLファイルもしくはPDFファイルでダウンロードします。PDFへの保存は Google Chrome の印刷機能を使用します。.",
   "version": "1.0.0",
   "icons": {
     "16": "images/icon/icon_16.png",
@@ -34,7 +34,6 @@
     "tabs",
     "https://ssp.kaigiroku.net/*",
     "storage",
-    "webNavigation",
     "declarativeContent"
   ],
   "web_accessible_resources": [
