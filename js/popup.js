@@ -24,9 +24,9 @@ let fontStyle = `
 
 const defaultStyle = `
 <style type="text/css" id="defaultStyle">
-  h1 { font-size: 1.3rem; }
-  h2 { font-size: 1.1rem; }
-  h3 { font-size: 1.1rem; }
+  h1 {font-size: 1.3rem;}
+  h2 {font-size: 1.1rem;}
+  h3 {font-size: 1.1rem;}
   #linkMenu {display: inline-block;}
   #linkMenu legend {font-size: 1rem;}
   #linkMenu ul {list-style:none;margin:0;padding:0;}
@@ -38,6 +38,7 @@ const defaultStyle = `
   #linkMenu li a{font-size: 0.8rem;}
   #linkMenu li.h1 a{font-size: 1rem;}
   #linkMenu li.h2 a{font-size: 0.9rem;}
+  figure {page-break-after: always;}
 </style>
 `
 
@@ -133,9 +134,16 @@ const awaitParseSchedulesFromCouncils = (councils) => {
         const councilId = content.councilId;
         $('#schedules').html("");
         for (const council of content.councils) {
-          $('#schedules').append('<div class="council-title">' + council.title + '</div>');
+          $('#schedules').append('<div class="council-title"><div>' + council.title + '</div><div><input type="checkbox" id="allchk" data-save-option="false" checked="checked"></div>');
+          $('#allchk').change(() => {
+            if($('#allchk').is(":checked")) {
+              $('input[name=schedules]').prop("checked", true);
+            } else {
+              $('input[name=schedules]').prop("checked", false);
+            }
+          });
           for (const schedule of council.schedules) {
-            $('#schedules').append('<label><input type="checkbox" name="schedules" data-council-id="' + council.id + '" data-schedule-id="' + schedule.id + '" checked="checked" />' + schedule.title + '</label><br />');
+            $('#schedules').append('<label><input type="checkbox" name="schedules" data-council-id="' + council.id + '" data-schedule-id="' + schedule.id + '" data-material="' + schedule.material + '" data-save-option="false" checked="checked" />' + schedule.title + '</label><br />');
           }
         }
         if($('#schedules').text().length > 0) {
@@ -153,30 +161,40 @@ const awaitParseSchedulesFromCouncils = (councils) => {
 
 const downloadFromSchedules = async () => {
   const baseUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMinuteView.html?";
+  const baseMaterialUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMaterial.html?minute_id=1&";
   let idpairs = [];
   let firstCouncilId = -1; //チェックされたうちの最初のcouncilIdを得る→そのIdのタイトルでファイル名を作成する
   $('input[name=schedules]:checked').each((idx, elm) => {
     if(firstCouncilId === -1) firstCouncilId = $(elm).attr("data-council-id");
-    idpairs.push({councilId: $(elm).attr("data-council-id"), scheduleId: $(elm).attr("data-schedule-id")});
+    idpairs.push({councilId: $(elm).attr("data-council-id"), scheduleId: $(elm).attr("data-schedule-id"), material: ($(elm).attr("data-material").toLowerCase() === "true") });
   });
 
+  /*
   if(idpairs.length > 12) {
     alert("サーバーへの負荷を考慮し、一度に選択できる項目を12個までに制限しております。");
     $("#loading").hide();
     return;
   }
+  */
 
   $("#loading").show();
   let loopCount = 0;
   let multipleParsedContent = "";
   for (let idpair of idpairs) {
     if(loopCount++ != 0) {
-      let waitMSec = 1000 + loopCount * 500;
-      $("#loading > span").text(waitMSec/1000 + "秒待機（負荷軽減用）");
-      //await sleep(waitMSec);
-await sleep(100);
+      let waitMSec = (loopCount > 8) ? "5000" : 1000 + loopCount * 500;
+      $("#loading > span").text(" " + waitMSec/1000 + "秒待機（負荷対策）");
+      await sleep(waitMSec);
+//await sleep(100);
     }
-    let url = baseUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
+    let url ="";
+    console.log(idpair.material);
+    if (idpair.material) {
+      url = baseMaterialUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
+    } else {
+      url = baseUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
+    }
+    console.log(url);
     // executescript前にupdate（ページ遷移）がcompleteするのを待つ必要がある
     // でないと、ページ遷移前のページでscriptをexecuteすることになってしまう
     // https://stackoverflow.com/questions/4584517/chrome-tabs-problems-with-chrome-tabs-update-and-chrome-tabs-executescript
@@ -209,7 +227,6 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   $("#replaceRegexErr").hide();
   const filename = $("#filename").val();
 
-  //const baseUrl = '<a href="https://ssp.kaigiroku.net/tenant/kodaira/$1">($2)</a>';
   const baseUrl = 'https://ssp.kaigiroku.net/tenant/' + urlInfo.cityName + '/';
 
   //const startTime = performance.now();
@@ -337,6 +354,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
     //console.log(, linkMenuDiv, $(sanitizedDom));
   }
   sanitizedContent = $(sanitizedDom).html();
+  const hasImg = ($(sanitizedDom).has("img").length) ? true : false;
 
   //https://stackoverflow.com/questions/4535816/how-to-use-font-face-on-a-chrome-extension-in-a-content-script
 
@@ -362,7 +380,11 @@ ${sanitizedContent}
 </html>`;
   //console.log(sanitizedContent);
 
-  if($("[type='radio'][name='htmlSave'][value='save']").is(":checked")){
+  const htmlSaveChecked = $("[type='radio'][name='htmlSave'][value='save']").is(":checked");
+  if(htmlSaveChecked || hasImg){
+    if(!htmlSaveChecked) {
+      alert("文書に画像が含まれているため、直接印刷ダイアログを開いてのPDF保存ができません。HTMLファイルをダウンロードしますので、それをブラウザで開き、「印刷」メニューから「PDFに保存」を行ってください。");
+    }
     var elm = document.createElement('a');
     elm.setAttribute('href', 'data:text/html;charset=utf-8,' + encodeURIComponent(sanitizedContent));
     elm.setAttribute('download', filename + ".html");
@@ -380,7 +402,7 @@ ${sanitizedContent}
 
 const saveOptions = async () => {
   let options = [];
-  $("[type=radio]:not([name='tabs']), [type=checkbox]").each((idx, elm) => {
+  $("[type=radio]:not([name='tabs']), [type=checkbox]:not([data-save-option='false'])").each((idx, elm) => {
     options.push({type: elm.type, name: elm.name, value: elm.value, checked: elm.checked});
   });
 
@@ -395,7 +417,7 @@ const loadOptions = async () => {
   const data = await browser.storage.local.get('options');
   
   if (data && data.options) {
-    $("[type=radio]:not([name='tabs']), [type=checkbox]").each((idx, elm) => {
+    $("[type=radio]:not([name='tabs']), [type=checkbox]:not([data-save-option='false'])").each((idx, elm) => {
       const obj = data.options.find(item => {
         return (item.type === elm.type && item.name === elm.name && item.value === elm.value);
       });

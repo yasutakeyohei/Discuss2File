@@ -15,7 +15,8 @@ var content = {
       title: string,
       schedules: [{
         id: int,
-        title: string
+        title: string,
+        material: bool
       }]
     }],
     councilId: int,
@@ -57,14 +58,16 @@ var parseScheduleIds = () => {
         $(`[data-council_id=${councilId}] > ul > li`).each((idx,elm) => {
           let id = $(elm).attr('schedule_id');
           let title = $(elm).text().replace(/\s+/g, "");
-          schedules.push({id: id, title: title});
+          let material = $(elm).hasClass('material_true');
+          schedules.push({id: id, title: title, material: material});
         });
         break;
       case PAGE_MODE_YEARLY:
         $(`#${councilId} > li`).each((idx,elm) => {
           let id = $(elm).attr('schedule_id');
           let title = $(elm).text().replace(/\s+/g, "");
-          schedules.push({id: id, title: title});
+          let material = $(elm).hasClass('material_true');
+          schedules.push({id: id, title: title, material: material});
         });
         break;
     }
