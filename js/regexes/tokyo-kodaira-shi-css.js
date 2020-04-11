@@ -13,6 +13,10 @@ table td,
 table th {
   border: 1px solid #333;
 }
+img {
+  border: 1px solid #eee;
+  box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 3px;
+}
 .a4 {
   width: 100%;
   font-size: 1rem;
@@ -26,13 +30,11 @@ table th {
   text-align: left;
 }
 div.date {
-  border: 1px solid #195b94;
-  box-shadow: rgba(0, 0, 0, 0.4) 3px 3px 3px;
+  border-bottom: 1px solid #195b94;
   color: #195b94;
   font-weight: bold;
   margin-bottom: 10px;
   margin-top: 15px;
-  padding: 3px 0 2px 2px;
 }
 h2.date {
   background-color: #195b94;
