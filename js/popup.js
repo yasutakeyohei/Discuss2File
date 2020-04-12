@@ -1,3 +1,4 @@
+//UDデジタルをfont-faceでKoruriと同様に指定すると印刷時に失敗するchromeバグあるため回避
 const fontFamilyBoldMap = new Map([
   ["UD デジタル 教科書体 N-R", "UD デジタル 教科書体 N-B"], 
   ["UD デジタル 教科書体 NP-R", "UD デジタル 教科書体 NP-B"], 
@@ -357,9 +358,9 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   sanitizedContent = $(sanitizedDom).html();
   const hasImg = ($(sanitizedDom).has("img").length) ? true : false;
 
-  //https://stackoverflow.com/questions/4535816/how-to-use-font-face-on-a-chrome-extension-in-a-content-script
-
   /*
+  font-faceでUDデジタル教科書の指定は for webfont not working when print
+  https://stackoverflow.com/questions/4535816/how-to-use-font-face-on-a-chrome-extension-in-a-content-script
   body {
     font-family: "UDD";
   }
@@ -379,7 +380,6 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
 ${sanitizedContent}
   </body>
 </html>`;
-  //console.log(sanitizedContent);
 
   const htmlSaveChecked = $("[type='radio'][name='htmlSave'][value='save']").is(":checked");
   if(htmlSaveChecked || hasImg){
@@ -587,9 +587,17 @@ const main = async () => {
           alert("正規表現設定タブで「デバッグモード」にチェックが入っているときは、一括ダウンロードは行えません。個別の会議録を開いた状態でダウンロードしてください。");
           return;
         }
+        if($("input[name='schedules']:checked").length === 0){
+          alert("ダウンロード項目を選択してください。");
+          return;
+        }
         downloadFromSchedules();
         break;
       case PAGE_MODE_SINGLE:
+        if(content.parsedContent == "") {
+          alert("内容が空です。");
+          return;
+        }
         downloadSingleMinuteHTML(content.parsedContent);
       break;
       default:
