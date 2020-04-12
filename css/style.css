@@ -332,6 +332,9 @@ button {
   font-size: 1.6rem;
   cursor: pointer;
 }
+button:active {
+  background: #710000;
+}
 
 .toggler {
   cursor: pointer;
@@ -360,5 +363,5 @@ button {
 }
 
 .completed {
-  background-color:gray;
+  background-color:#ddd;
 }
