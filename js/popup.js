@@ -143,7 +143,7 @@ const awaitParseSchedulesFromCouncils = (councils) => {
             }
           });
           for (const schedule of council.schedules) {
-            $('#schedules').append('<label><input type="checkbox" name="schedules" data-council-id="' + council.id + '" data-schedule-id="' + schedule.id + '" data-minute-id="' + schedule.minute_id + '" data-material="' + schedule.material + '" data-save-option="false" checked="checked" />' + schedule.title + '</label><br />');
+            $('#schedules').append('<label><input type="checkbox" name="schedules" data-council-id="' + council.id + '" data-schedule-id="' + schedule.id + '" data-minute-id="' + schedule.minute_id + '" data-material="' + schedule.material + '" data-save-option="false" checked="checked" />' + schedule.title + '</label>');
           }
         }
         if($('#schedules').text().length > 0) {
@@ -188,18 +188,19 @@ const downloadFromSchedules = async () => {
 await sleep(100);
     }
     let url ="";
-    console.log(idpair.material);
+    //console.log(idpair.material);
     if (idpair.material) {
       url = baseMaterialUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId + "&minute_id=" + idpair.minuteId;
     } else {
       url = baseUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
     }
-    console.log(url);
+    //console.log(url);
     // executescript前にupdate（ページ遷移）がcompleteするのを待つ必要がある
     // でないと、ページ遷移前のページでscriptをexecuteすることになってしまう
     // https://stackoverflow.com/questions/4584517/chrome-tabs-problems-with-chrome-tabs-update-and-chrome-tabs-executescript
     await awaitBrowserTabUpdate(url);
     await awaitParseSingleMinute(MODE_SINGLE_MINUTE_WAITLOAD_AND_PARSE);
+    $("input[name='schedules'][data-council-id=" + idpair.councilId + "][data-schedule-id=" + idpair.scheduleId +"]").parent().addClass("completed");
     multipleParsedContent += content.parsedContent;
   }
   $("#loading span").text("");

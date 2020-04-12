@@ -289,6 +289,10 @@ p.icon-wrapper {
   resize: both;
 }
 
+#schedules label {
+  display: block;
+}
+
 .group-title {
   margin: 0px 0 2px 0px;
   border-bottom: 1px solid #143742;
@@ -355,3 +359,6 @@ button {
   font-size: 12px;
 }
 
+.completed {
+  background-color:gray;
+}
