@@ -143,7 +143,7 @@ const awaitParseSchedulesFromCouncils = (councils) => {
             }
           });
           for (const schedule of council.schedules) {
-            $('#schedules').append('<label><input type="checkbox" name="schedules" data-council-id="' + council.id + '" data-schedule-id="' + schedule.id + '" data-material="' + schedule.material + '" data-save-option="false" checked="checked" />' + schedule.title + '</label><br />');
+            $('#schedules').append('<label><input type="checkbox" name="schedules" data-council-id="' + council.id + '" data-schedule-id="' + schedule.id + '" data-minute-id="' + schedule.minute_id + '" data-material="' + schedule.material + '" data-save-option="false" checked="checked" />' + schedule.title + '</label><br />');
           }
         }
         if($('#schedules').text().length > 0) {
@@ -166,7 +166,7 @@ const downloadFromSchedules = async () => {
   let firstCouncilId = -1; //チェックされたうちの最初のcouncilIdを得る→そのIdのタイトルでファイル名を作成する
   $('input[name=schedules]:checked').each((idx, elm) => {
     if(firstCouncilId === -1) firstCouncilId = $(elm).attr("data-council-id");
-    idpairs.push({councilId: $(elm).attr("data-council-id"), scheduleId: $(elm).attr("data-schedule-id"), material: ($(elm).attr("data-material").toLowerCase() === "true") });
+    idpairs.push({councilId: $(elm).attr("data-council-id"), scheduleId: $(elm).attr("data-schedule-id"), minuteId: $(elm).attr("data-minute-id"), material: ($(elm).attr("data-material").toLowerCase() === "true") });
   });
 
   /*
@@ -184,13 +184,13 @@ const downloadFromSchedules = async () => {
     if(loopCount++ != 0) {
       let waitMSec = (loopCount > 8) ? "5000" : 1000 + loopCount * 500;
       $("#loading > span").text(" " + waitMSec/1000 + "秒待機（負荷対策）");
-      await sleep(waitMSec);
-//await sleep(100);
+      //await sleep(waitMSec);
+await sleep(100);
     }
     let url ="";
     console.log(idpair.material);
     if (idpair.material) {
-      url = baseMaterialUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
+      url = baseMaterialUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId + "&minute_id=" + idpair.minuteId;
     } else {
       url = baseUrl + "council_id=" +  idpair.councilId + "&schedule_id=" + idpair.scheduleId;
     }

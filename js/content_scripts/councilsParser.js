@@ -16,7 +16,8 @@ var content = {
       schedules: [{
         id: int,
         title: string,
-        material: bool
+        material: bool,
+        minute_id: int,
       }]
     }],
     councilId: int,
@@ -59,7 +60,8 @@ var parseScheduleIds = () => {
           let id = $(elm).attr('schedule_id');
           let title = $(elm).text().replace(/\s+/g, "");
           let material = $(elm).hasClass('material_true');
-          schedules.push({id: id, title: title, material: material});
+          let minute_id = $(elm).attr('minute_id');
+          schedules.push({id: id, title: title, material: material, minute_id: minute_id});
         });
         break;
       case PAGE_MODE_YEARLY:
@@ -67,7 +69,8 @@ var parseScheduleIds = () => {
           let id = $(elm).attr('schedule_id');
           let title = $(elm).text().replace(/\s+/g, "");
           let material = $(elm).hasClass('material_true');
-          schedules.push({id: id, title: title, material: material});
+          let minute_id = $(elm).attr('minute_id');
+          schedules.push({id: id, title: title, material: material, minute_id: minute_id});
         });
         break;
     }
