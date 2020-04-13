@@ -23,3 +23,33 @@
 	content: "\ea36";
 	text-align: center;
 }
+
+.icon-pause:before {
+	content: "\ea1d";
+	text-align: center;
+}
+
+.icon-stop:before {
+	content: "\ea1e";
+	text-align: center;
+}
+
+.icon-github:before {
+	content: "\eab0";
+	text-align: center;
+}
+
+.icon-wordpress:before {
+	content: "\eab4";
+	text-align: center;
+}
+
+.icon-wait:before {
+	content: "\e979";
+	text-align: center;
+}
+
+.icon-smile:before {
+	content: "\e900";
+	text-align: center;
+}
