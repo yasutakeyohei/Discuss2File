@@ -47,6 +47,16 @@ let content = {}; // see singleMinuteParase or councilsParser
 let fontModule = null;
 let urlInfo = { cityName: "", pageMode: -1 }
 
+const INITIAL = 0;
+const DOWNLOADING = 1;
+const PAUSED = 2;
+const PARSING = 3;
+const COMPLETED = 4;
+
+let state = {
+  download: INITIAL,
+  multipleParsedContent: "",
+};
 
 const sleep = (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -69,6 +79,9 @@ const awaitParseSingleMinute = (mode) => {
           $("#filename").val(content.filename);
           hankakuNumber();
         }
+        resolve();
+      } else if(content.result === "abort") {
+        browser.runtime.onMessage.removeListener(listener);
         resolve();
       }
     }
@@ -160,14 +173,23 @@ const awaitParseSchedulesFromCouncils = (councils) => {
   });
 }
 
-const downloadFromSchedules = async () => {
+const downloadFromSchedules = async (initialParsedContent) => {
   const baseUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMinuteView.html?";
   const baseMaterialUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMaterial.html?minute_id=1&";
   let idpairs = [];
-  let firstCouncilId = -1; //チェックされたうちの最初のcouncilIdを得る→そのIdのタイトルでファイル名を作成する
+  let firstCouncilId = -1;
+  //チェックされたうちの最初のcouncilIdを得る→そのIdのタイトルでファイル名を作成する
+  //parseするのは、チェックされたうち、completedしていないitem
   $('input[name=schedules]:checked').each((idx, elm) => {
     if(firstCouncilId === -1) firstCouncilId = $(elm).attr("data-council-id");
-    idpairs.push({councilId: $(elm).attr("data-council-id"), scheduleId: $(elm).attr("data-schedule-id"), minuteId: $(elm).attr("data-minute-id"), material: ($(elm).attr("data-material").toLowerCase() === "true") });
+    if(!$(elm).hasClass("completed")) {
+      idpairs.push({
+        councilId: $(elm).attr("data-council-id"),
+        scheduleId: $(elm).attr("data-schedule-id"),
+        minuteId: $(elm).attr("data-minute-id"),
+        material: ($(elm).attr("data-material").toLowerCase() === "true")
+      });
+    }
   });
 
   /*
@@ -180,8 +202,9 @@ const downloadFromSchedules = async () => {
 
   $("#loading").show();
   let loopCount = 0;
-  let multipleParsedContent = "";
+  let multipleParsedContent = initialParsedContent;
   for (let idpair of idpairs) {
+    if(state.download !== DOWNLOADING) break;
     if(loopCount++ != 0) {
       let waitMSec = (loopCount > 8) ? "5000" : 1000 + loopCount * 500;
       $("#loading > span").text(" " + waitMSec/1000 + "秒待機（負荷対策）");
@@ -201,14 +224,34 @@ await sleep(100);
     // https://stackoverflow.com/questions/4584517/chrome-tabs-problems-with-chrome-tabs-update-and-chrome-tabs-executescript
     await awaitBrowserTabUpdate(url);
     await awaitParseSingleMinute(MODE_SINGLE_MINUTE_WAITLOAD_AND_PARSE);
-    $("input[name='schedules'][data-council-id=" + idpair.councilId + "][data-schedule-id=" + idpair.scheduleId +"]").parent().addClass("completed");
-    multipleParsedContent += content.parsedContent;
+    if(content.result === "abort") {
+      setState({download: PAUSED});
+    } else {
+      $("input[name='schedules'][data-council-id=" + idpair.councilId + "][data-schedule-id=" + idpair.scheduleId +"]")
+      .addClass("completed")
+      .parent()
+      .addClass("completed");
+      multipleParsedContent += content.parsedContent;
+    }
   }
   $("#loading span").text("");
   $("#loading").hide();
 
-  downloadSingleMinuteHTML(multipleParsedContent);
-//  parseContent(id);
+  switch(state.download) {
+    case INITIAL:
+      break;
+    case DOWNLOADING:
+      downloadSingleMinuteHTML(multipleParsedContent);
+      break;
+    case PAUSED:
+      setState({multipleParsedContent: multipleParsedContent});
+      break;
+    //never happen
+    case PARSING:
+    case COMPLETED:
+    default:
+      break;
+  }
 }
 
 const awaitBrowserTabUpdate = (url) => {
@@ -225,6 +268,8 @@ const awaitBrowserTabUpdate = (url) => {
 }
 
 const downloadSingleMinuteHTML = async (parsedContent) => {
+  setState({download: PARSING});
+
   const debugMode = $("#debugMode").is(":checked");
   $("#replaceRegexErr").hide();
   const filename = $("#filename").val();
@@ -393,12 +438,14 @@ ${sanitizedContent}
     $("#downloadLink").append(elm);
     elm.click();
     $("#downloadLink").empty();
+    if(!debugMode) window.close();
   } else {
     let w = window.open("");
     w.document.write(sanitizedContent);
     w.print();
-    w.close();
+    if(!debugMode) w.close();
   }
+  setState({download: COMPLETED});
 }
 
 const saveOptions = async () => {
@@ -485,6 +532,30 @@ const removeUnsupportedFont = () => {
       $(elm).remove();
     }
   });
+}
+
+const setState = (newState) => {
+  state = {...state, ...newState}; //merge state
+  let html = "";
+  switch(state.download) {
+    case INITIAL:
+      html = `<p class="icon-wrapper"><span class="icon-download"></span></p><span>Download</span>`;
+      break;
+    case PAUSED:
+      html = `<p class="icon-wrapper"><span class="icon-download"></span></p><span>Download Restart</span>`;
+      break;
+      case DOWNLOADING:
+      html = `<p class="icon-wrapper"><span class="icon-pause"></span></p><span>Pause</span>`;
+      break;
+    case PARSING:
+      html = `<p class="icon-wrapper"><span class="icon-wait"></span></p><span>Parsing</span>`;
+      break;
+    case COMPLETED:
+      html = `<p class="icon-wrapper"><span class="icon-smile"></span></p><span>COMPLETED</span>`;
+      break; 
+  }
+  $("#download").html(html);
+
 }
 
 const main = async () => {
@@ -591,7 +662,29 @@ const main = async () => {
           alert("ダウンロード項目を選択してください。");
           return;
         }
-        downloadFromSchedules();
+        switch(state.download) {
+          case INITIAL:
+            setState({download: DOWNLOADING});
+            downloadFromSchedules("");
+            break;
+          case DOWNLOADING:
+            /*
+              ダウンロード中にクリックされたら、ダウンロードを停止。
+              その後、再度ダウンロードボタンが押された際の Message Listener の重複登録を防ぐ必要があるが
+              Message Listenerを（匿名で）全削除する方法がないため、parserがabortメッセージを送るよう上書きする。
+              abortメッセージを受けたら、downloadFromSchedulesのawaitParseSingleMinute直後にstate.downloadをPAUSEDに変える。
+            */
+            browser.tabs.executeScript(null, { file: "js/content_scripts/singleMinuteParserAborter.js" });
+            break;
+          case PAUSED:
+            setState({download: DOWNLOADING});
+            downloadFromSchedules(state.multipleParsedContent);
+            break;
+          case PARSING:
+          case COMPLETED:
+          default:
+            break;
+        }
         break;
       case PAGE_MODE_SINGLE:
         if(content.parsedContent == "") {
