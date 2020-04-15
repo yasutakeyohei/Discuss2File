@@ -45,7 +45,6 @@ const defaultStyle = `
 
 let content = {}; // see singleMinuteParase or councilsParser
 let fontModule = null;
-let urlInfo = { cityName: "", pageMode: -1 }
 
 const INITIAL = 0;
 const DOWNLOADING = 1;
@@ -56,6 +55,10 @@ const COMPLETED = 4;
 let state = {
   download: INITIAL,
   multipleParsedContent: "",
+  tabId: -1,
+  indexUrl: "",
+  cityName: "",
+  pageMode: -1,
 };
 
 const sleep = (ms) => {
@@ -75,7 +78,7 @@ const awaitParseSingleMinute = (mode) => {
       content = message.content;
       if(content.result === "singleParsed") {
         browser.runtime.onMessage.removeListener(listener);
-        if(urlInfo.pageMode === PAGE_MODE_SINGLE) {
+        if(state.pageMode === PAGE_MODE_SINGLE) {
           $("#filename").val(content.filename);
           hankakuNumber();
         }
@@ -93,7 +96,7 @@ const awaitParseSingleMinute = (mode) => {
 const awaitParseCouncils = () => {
   return new Promise(async (resolve) => {
     var config = {
-      pageMode: urlInfo.pageMode,
+      pageMode: state.pageMode,
       mode: MODE_COUNCILS_PARSE
     }
     await browser.tabs.executeScript(null, { code: 'var config = ' + JSON.stringify(config) });
@@ -134,7 +137,7 @@ const awaitParseCouncils = () => {
 const awaitParseSchedulesFromCouncils = (councils) => {
   return new Promise(async (resolve) => {
     var config = {
-      pageMode: urlInfo.pageMode,
+      pageMode: state.pageMode,
       mode: MODE_SCHEDULES_SHOW_AND_PARSE_IDS,
       councils: councils
     }
@@ -174,8 +177,8 @@ const awaitParseSchedulesFromCouncils = (councils) => {
 }
 
 const downloadFromSchedules = async (initialParsedContent) => {
-  const baseUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMinuteView.html?";
-  const baseMaterialUrl = "https://ssp.kaigiroku.net/tenant/" + urlInfo.cityName + "/SpMaterial.html?minute_id=1&";
+  const baseUrl = "https://ssp.kaigiroku.net/tenant/" + state.cityName + "/SpMinuteView.html?";
+  const baseMaterialUrl = "https://ssp.kaigiroku.net/tenant/" + state.cityName + "/SpMaterial.html?minute_id=1&";
   let idpairs = [];
   let firstCouncilId = -1;
   //チェックされたうちの最初のcouncilIdを得る→そのIdのタイトルでファイル名を作成する
@@ -222,7 +225,7 @@ await sleep(100);
     // executescript前にupdate（ページ遷移）がcompleteするのを待つ必要がある
     // でないと、ページ遷移前のページでscriptをexecuteすることになってしまう
     // https://stackoverflow.com/questions/4584517/chrome-tabs-problems-with-chrome-tabs-update-and-chrome-tabs-executescript
-    await awaitBrowserTabUpdate(url);
+    await awaitBrowserTabUpdate(state.tabId, url);
     await awaitParseSingleMinute(MODE_SINGLE_MINUTE_WAITLOAD_AND_PARSE);
     if(content.result === "abort") {
       setState({download: PAUSED});
@@ -254,7 +257,7 @@ await sleep(100);
   }
 }
 
-const awaitBrowserTabUpdate = (url) => {
+const awaitBrowserTabUpdate = (tabId, url) => {
   return new Promise(resolve => {
     const listener = (tabId, changeInfo, tab) => {
       if(changeInfo.status === 'complete') {
@@ -263,7 +266,7 @@ const awaitBrowserTabUpdate = (url) => {
       }
     }
     browser.tabs.onUpdated.addListener(listener);
-    browser.tabs.update(null, {url: url, active: true});
+    browser.tabs.update(tabId, {url: url, active: true});
   });
 }
 
@@ -274,7 +277,7 @@ const downloadSingleMinuteHTML = async (parsedContent) => {
   $("#replaceRegexErr").hide();
   const filename = $("#filename").val();
 
-  const baseUrl = 'https://ssp.kaigiroku.net/tenant/' + urlInfo.cityName + '/';
+  const baseUrl = 'https://ssp.kaigiroku.net/tenant/' + state.cityName + '/';
 
   //const startTime = performance.now();
 
@@ -438,8 +441,10 @@ ${sanitizedContent}
     $("#downloadLink").append(elm);
     elm.click();
     $("#downloadLink").empty();
+    await awaitBrowserTabUpdate(state.tabId, state.indexUrl);
     if(!debugMode) window.close();
   } else {
+    await awaitBrowserTabUpdate(state.tabId, state.indexUrl);
     let w = window.open("");
     w.document.write(sanitizedContent);
     w.print();
@@ -563,17 +568,19 @@ const main = async () => {
   $("head").append(fontFaceStyle);
   await loadOptions();
   const tabs = await browser.tabs.query({'active': true, 'lastFocusedWindow': true});
-  const url = tabs[0].url;
-  urlInfo.cityName = url.match(/^.*tenant\/([^/]*)\/.*$/)[1];
 
-  if(url.match(/^.*\/SpTop.html.*/)){
-    urlInfo.pageMode = PAGE_MODE_TOP;
-  } else if(url.match(/#schedule-dialog/)) {
-    urlInfo.pageMode = PAGE_MODE_SCHEDULE_DIALOG;
-  } else if(url.match(/schedule_id\=/)) {
-    urlInfo.pageMode = PAGE_MODE_SINGLE;
-  } else if(url.match(/view_years\=/)) {
-    urlInfo.pageMode = PAGE_MODE_YEARLY;
+  state.tabId = tabs[0].id;
+  state.indexUrl = tabs[0].url;
+  state.cityName = state.indexUrl.match(/^.*tenant\/([^/]*)\/.*$/)[1];
+
+  if(state.indexUrl.match(/^.*\/SpTop.html.*/)){
+    state.pageMode = PAGE_MODE_TOP;
+  } else if(state.indexUrl.match(/#schedule-dialog/)) {
+    state.pageMode = PAGE_MODE_SCHEDULE_DIALOG;
+  } else if(state.indexUrl.match(/schedule_id\=/)) {
+    state.pageMode = PAGE_MODE_SINGLE;
+  } else if(state.indexUrl.match(/view_years\=/)) {
+    state.pageMode = PAGE_MODE_YEARLY;
   }
  
   updateFontSettingSampleText();
@@ -616,7 +623,7 @@ const main = async () => {
   $("[name=htmlSave], [id=removeSpacesFromFilename], [id=hankakuNumber]").change(() => {
     hankakuNumber();
     saveOptions();
-    if(urlInfo.pageMode === PAGE_MODE_SINGLE) awaitParseSingleMinute(MODE_SINGLE_MINUTE_PARSE);
+    if(state.pageMode === PAGE_MODE_SINGLE) awaitParseSingleMinute(MODE_SINGLE_MINUTE_PARSE);
   });
 
   //regex tab
@@ -651,7 +658,7 @@ const main = async () => {
 
   $('#download').click((e) => {
     e.preventDefault();
-    switch(urlInfo.pageMode) {
+    switch(state.pageMode) {
       case PAGE_MODE_TOP:
       case PAGE_MODE_YEARLY:
         if($("#debugMode").is(":checked")) {
@@ -698,7 +705,7 @@ const main = async () => {
     //window.close();
   });
 
-  switch(urlInfo.pageMode) {
+  switch(state.pageMode) {
     case PAGE_MODE_TOP:
     case PAGE_MODE_YEARLY:
         $("#councils").show();
