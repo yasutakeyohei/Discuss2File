@@ -48,6 +48,10 @@ h2.date {
 .nittei {
   color: blue;
 }
+h5 {
+  color: blue;
+  font-size: 1rem;
+}
 .speak-start {
   margin-top: 15px;
 }
