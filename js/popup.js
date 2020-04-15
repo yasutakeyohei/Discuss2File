@@ -211,8 +211,8 @@ const downloadFromSchedules = async (initialParsedContent) => {
     if(loopCount++ != 0) {
       let waitMSec = (loopCount > 8) ? "5000" : 1000 + loopCount * 500;
       $("#loading > span").text(" " + waitMSec/1000 + "秒待機（負荷対策）");
-      //await sleep(waitMSec);
-await sleep(100);
+      await sleep(waitMSec);
+//await sleep(100);
     }
     let url ="";
     //console.log(idpair.material);
