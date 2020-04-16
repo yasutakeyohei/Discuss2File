@@ -24,10 +24,12 @@ Discuss2Fileは会議録検索システムDiscuss（NTTアドバンステクノ�
 
 ## 使い方
 
-![使い方](./images/readme/how-to-use.gif "使い方")
+<table><tr><td>
+ <img src="./images/readme/how-to-use.gif" alt="使い方" />
+</td></tr></table>
 
 詳細は[こちらのサイト](https://yasutakeyohei.com/discuss2file)をご覧ください。
-1. chromeウェブストアで「Discuss2File」を検索し、インストール
+1. [chromeウェブストア](https://chrome.google.com/webstore/detail/%E5%9C%B0%E6%96%B9%E8%AD%B0%E4%BC%9A%E4%BC%9A%E8%AD%B0%E9%8C%B2%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%80%E3%83%BC%EF%BC%88discuss2fi/aooaeblcjhpdpcfaadmdglclkffefoom?authuser=0&hl=ja)からインストール
 2. Discussを利用している会議録サイト（レスポンシブ対応版）にアクセスしてください
 3. ブラウザ右上に表示されるDLのアイコンをクリックします
 4. 必要に応じ、フォント設定・正規表現設定をそれぞれのタブで行います。
