@@ -24,8 +24,9 @@ Discuss2Fileは会議録検索システムDiscuss（NTTアドバンステクノ�
 
 ## 使い方
 
-詳細はこちらのサイトをご覧ください。
+![使い方](./images/readme/how-to-use.gif "使い方")
 
+詳細は[こちらのサイト](https://yasutakeyohei.com/discuss2file)をご覧ください。
 1. chromeウェブストアで「Discuss2File」を検索し、インストール
 2. Discussを利用している会議録サイト（レスポンシブ対応版）にアクセスしてください
 3. ブラウザ右上に表示されるDLのアイコンをクリックします
