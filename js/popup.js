@@ -209,7 +209,7 @@ const downloadFromSchedules = async (initialParsedContent) => {
   for (let idpair of idpairs) {
     if(state.download !== DOWNLOADING) break;
     if(loopCount++ != 0) {
-      let waitMSec = (loopCount > 18) ? "10000" : 1000 + loopCount * 500;
+      let waitMSec = (loopCount > 16) ? "10000" : 2000 + loopCount * 500;
       $("#loading > span").text(" " + waitMSec/1000 + "秒待機（負荷対策）");
       await sleep(waitMSec);
 //await sleep(100);
